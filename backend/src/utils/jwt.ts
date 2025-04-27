@@ -6,6 +6,7 @@ interface TokenPayload {
     user_Id: number;
     email: string;
     is_member: boolean;
+    is_deleted: boolean;
   }
   
 export const generateToken = (payload: TokenPayload): string => {
