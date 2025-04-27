@@ -16,7 +16,7 @@ const pool = new Pool({
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
 
 // 회원가입
-export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
+export const register = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const client = await pool.connect();
 
@@ -28,7 +28,8 @@ export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
     );
 
     if (existingUser.rows.length > 0) {
-      return res.status(400).json({ message: '이미 가입된 이메일입니다.' });
+      res.status(400).json({ message: '이미 가입된 이메일입니다.' });
+      return;
     }
 
     // 비밀번호 해싱
@@ -52,7 +53,7 @@ export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
 };
 
   // 로그인
-  export const login = async (req: Request<{}, {}, Login>, res: Response) => {
+  export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const client = await pool.connect();
   
@@ -63,19 +64,22 @@ export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
       );
   
       if (userResult.rowCount === 0) {
-        return res.status(400).json({ message: '유효하지 않은 이메일 또는 비밀번호' });
+        res.status(400).json({ message: '유효하지 않은 이메일 또는 비밀번호' });
+        return;
       }
   
       const user = userResult.rows[0];
   
       if (user.is_deleted === false) {
-        return res.status(400).json({ message: '탈퇴한 회원입니다.' });
+        res.status(400).json({ message: '탈퇴한 회원입니다.' });
+        return;
       }
   
       const isPasswordValid = await bcrypt.compare(password, user.password);
   
       if (!isPasswordValid) {
-        return res.status(400).json({ message: '유효하지 않은 이메일 또는 비밀번호' });
+        res.status(400).json({ message: '유효하지 않은 이메일 또는 비밀번호' });
+        return;
       }
   
       // 토큰 생성 및 응답도 try 내부에서 처리
@@ -109,10 +113,11 @@ export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
 
   //회원탈퇴
   export const withdraw = async (req: AuthRequest, res: Response) => {
-    const userId = req.user?.user_Id;
+    const userId = (req as any).user?.user_Id;
   
     if (!userId) {
-      return res.status(401).json({ message: '인증이 필요합니다.' });
+      res.status(401).json({ message: '인증이 필요합니다.' });
+      return;
     }
   
     const client = await pool.connect();
@@ -125,7 +130,8 @@ export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
       );
   
       if (result.rowCount === 0) {
-        return res.status(404).json({ message: '유저를 찾을 수 없습니다.' });
+        res.status(404).json({ message: '유저를 찾을 수 없습니다.' });
+        return;
       }
   
       res.status(200).json({ message: '회원 탈퇴가 완료되었습니다.' });
