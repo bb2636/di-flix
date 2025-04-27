@@ -2,14 +2,12 @@ import { Response, NextFunction } from 'express';
 import { verify } from '../utils/jwt';
 import { AuthRequest } from './authrequest';
 
-export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
-  const token = req.cookies?.token;
-
+export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+  const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
   if (!token) {
-    res.status(401).json({ error: '토큰이 없습니다.' });
+    res.status(401).json({ message: '토큰이 없습니다.' });
     return;
   }
-
   try {
     const decoded = verify<{
       user_Id: number;
