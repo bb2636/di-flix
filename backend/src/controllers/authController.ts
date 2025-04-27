@@ -84,7 +84,7 @@ export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
   
       // generateToken 함수 사용
       const token = generateToken({
-        userId: user.id,
+        user_Id: user.id,
         email,
         is_member: user.is_member,
       });
