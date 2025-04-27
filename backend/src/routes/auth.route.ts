@@ -4,7 +4,7 @@ import { verifyToken } from '../midlewares/login-required';
 
 const router = express.Router();
 
-router.post('/signup', register);
+router.post('/users/signup', register);
 router.post('/users/login', login);
 router.post('/users/logout', logout);
 router.post('/users/withdraw', verifyToken, withdraw);

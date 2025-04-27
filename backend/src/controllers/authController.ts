@@ -1,19 +1,9 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { Pool } from 'pg';
-import { Signup, Login } from '../types/auth';
+import { pool } from '../utils/db';
 import { generateToken } from "../utils/jwt";
 import { AuthRequest } from '../midlewares/authrequest';
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASS,
-  port: Number(process.env.DB_PORT) || 5432,
-});
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
 
 // 회원가입
 export const register = async (req: Request, res: Response) => {
@@ -22,8 +12,8 @@ export const register = async (req: Request, res: Response) => {
 
   try {
     // 이미 가입된 이메일인지 확인
-    const existingUser = await client.query<{ id: number }>(
-      'SELECT id FROM users WHERE email = $1',
+    const existingUser = await client.query<{ user_id: number }>(
+      'SELECT user_id FROM users WHERE email = $1',
       [email]
     );
 
@@ -39,11 +29,11 @@ export const register = async (req: Request, res: Response) => {
     const result = await client.query(
       `INSERT INTO users (email, password, is_member, is_deleted)
        VALUES ($1, $2, $3, $4)
-       RETURNING id`,
+       RETURNING user_id`,
       [email, hashedPassword, false, true]
     );
 
-    res.status(201).json({ message: '회원가입 성공', userId: result.rows[0].id });
+    res.status(201).json({ message: '회원가입 성공', user_Id: result.rows[0].user_id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: '서버 오류' });
@@ -59,7 +49,7 @@ export const register = async (req: Request, res: Response) => {
   
     try {
       const userResult = await client.query(
-        'SELECT id, password, is_member, is_deleted FROM users WHERE email = $1',
+        'SELECT user_id, password, is_member, is_deleted FROM users WHERE email = $1',
         [email]
       );
   
@@ -84,7 +74,7 @@ export const register = async (req: Request, res: Response) => {
   
       // 토큰 생성 및 응답도 try 내부에서 처리
       const token = generateToken({
-        user_Id: user.id,
+        user_Id: user.user_id,
         email,
         is_member: user.is_member,
         is_deleted: user.is_deleted,
@@ -125,7 +115,7 @@ export const register = async (req: Request, res: Response) => {
     try {
       // 탈퇴 처리: is_deleted 필드를 true로 변경
       const result = await client.query(
-        'UPDATE users SET is_deleted = true WHERE id = $1',
+        'UPDATE users SET is_deleted = true WHERE user_id = $1',
         [userId]
       );
   
