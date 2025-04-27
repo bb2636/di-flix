@@ -16,55 +16,50 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
 
 // 회원가입
 export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
-    const { email, password } = req.body;
-  
-    try {
-      const client = await pool.connect();
-  
-      // 이미 가입된 이메일인지 확인
-      const existingUser = await client.query<{ id: number }>(
-        'SELECT id FROM users WHERE email = $1',
-        [email]
-      );
-  
-      if (existingUser.rows.length > 0) {
-        client.release();
-        return res.status(400).json({ message: '이미 가입된 이메일입니다.' });
-      }
-  
-      // 비밀번호 해싱
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      // 기본값: is_member = false, is_deleted = true
-      const result = await client.query(
-        `INSERT INTO users (email, password, is_member, is_deleted)
-         VALUES ($1, $2, $3, $4)
-         RETURNING id`,
-        [email, hashedPassword, false, true]
-      );
-  
-      client.release();
-  
-      res.status(201).json({ message: '회원가입 성공', userId: result.rows[0].id });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: '서버 오류' });
+  const { email, password } = req.body;
+  const client = await pool.connect();
+
+  try {
+    // 이미 가입된 이메일인지 확인
+    const existingUser = await client.query<{ id: number }>(
+      'SELECT id FROM users WHERE email = $1',
+      [email]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ message: '이미 가입된 이메일입니다.' });
     }
+
+    // 비밀번호 해싱
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 기본값: is_member = false, is_deleted = true
+    const result = await client.query(
+      `INSERT INTO users (email, password, is_member, is_deleted)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id`,
+      [email, hashedPassword, false, true]
+    );
+
+    res.status(201).json({ message: '회원가입 성공', userId: result.rows[0].id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류' });
+  } finally {
+    client.release();
   }
+};
 
   // 로그인
   export const login = async (req: Request<{}, {}, Login>, res: Response) => {
     const { email, password } = req.body;
+    const client = await pool.connect();
   
     try {
-      const client = await pool.connect();
-  
       const userResult = await client.query(
         'SELECT id, password, is_member, is_deleted FROM users WHERE email = $1',
         [email]
       );
-  
-      client.release();
   
       if (userResult.rowCount === 0) {
         return res.status(400).json({ message: '유효하지 않은 이메일 또는 비밀번호' });
@@ -82,17 +77,19 @@ export const register = async (req: Request<{}, {}, Signup>, res: Response) => {
         return res.status(400).json({ message: '유효하지 않은 이메일 또는 비밀번호' });
       }
   
-      // generateToken 함수 사용
+      // 토큰 생성 및 응답도 try 내부에서 처리
       const token = generateToken({
         user_Id: user.id,
         email,
         is_member: user.is_member,
+        is_deleted: user.is_deleted,
       });
   
       res.status(200).json({ token });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: '서버 오류' });
+    } finally {
+      client.release();
     }
   };
-  
