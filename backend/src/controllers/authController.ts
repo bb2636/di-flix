@@ -54,7 +54,7 @@ export const register = async (req: Request, res: Response) => {
 
   //회원탈퇴
   export const withdraw = async (req: AuthRequest, res: Response) => {
-    const userId = (req as any).user?.user_Id;
+    const userId = (req as any).user?.user_id;
   
     if (!userId) {
       res.status(401).json({ message: '인증이 필요합니다.' });
