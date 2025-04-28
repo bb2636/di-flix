@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 const secret = process.env.JWT_SECRET || "your_secret_key";
 
 interface TokenPayload {
-    user_Id: number;
+    user_id: number;
     email: string;
     is_member: boolean;
     is_deleted: boolean;

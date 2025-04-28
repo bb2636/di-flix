@@ -1,28 +1,42 @@
-model User {
-  user_id    Int     @id @default(autoincrement()) @map("user_id")
-  email String  @unique 
-  password  String?
-  is_member   Boolean @default(false) // 멤버십 유무 (기본값 false)
-  is_deleted  Boolean @default(true) // 탈퇴 여부 (기본값 true) 탈퇴 시 false
-  watchHistories WatchHistory[] @relation(name: "UserToWatchHistory")
-  wishlists      Wishlist[]      @relation(name: "UserToWishlist")
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
-model Category {
-    category_id Int  @id @default(autoincrement())
-    category_name String 
-    contents Content[] @relation(name: "CategoryToContent")
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id    Int     @id @default(autoincrement())
+  email      String  @unique 
+  password   String?
+  is_member  Boolean @default(false)
+  is_deleted Boolean @default(true)
+
+  watchHistories WatchHistory[]
+  wishlists      Wishlist[]
+}
+
+model Genre {
+  genre_ids   Int[]    @id
+  genre_name String
+
+  contents   Content[] @relation("GenreToContent")
 }
 
 model Content {
-  movie_id    Int     @id @default(autoincrement())
-  title       String  @db.VarChar(255)
-  description String? @db.Text
-  genre_ids    Int?
+  movie_id     Int       @id @default(autoincrement())
+  title        String    @db.VarChar(255)
+  description  String?   @db.Text
+  genre_ids    Int[]     // 수정: category_id → genre_ids
+  views        Int       @default(0)
 
-  views       Int     @default(0)
+  genre        Genre?    @relation(name: "GenreToContent", fields: [genre_ids], references: [genre_ids]) // 수정
 
-  genre       Genre?  @relation(fields: [genre_ids], references: [genre_ids])
+  watchHistories WatchHistory[]
+  wishlists      Wishlist[]
 }
 
 model WatchHistory {
@@ -30,7 +44,7 @@ model WatchHistory {
   user_id    Int?
   movie_id   Int?
 
-  user   User?   @relation(name: "UserToWatchHistory", fields: [user_id], references: [user_id])
+  user   User?    @relation(fields: [user_id], references: [user_id])
   movie  Content? @relation(fields: [movie_id], references: [movie_id])
 
   timestamp DateTime @default(now())
@@ -41,10 +55,6 @@ model Wishlist {
   user_id     Int?
   movie_id    Int?
 
-  user   User?    @relation(name: "UserToWishlist", fields: [user_id], references: [user_id])
+  user   User?    @relation(fields: [user_id], references: [user_id])
   movie  Content? @relation(fields: [movie_id], references: [movie_id])
-}
-model Genre {
-  genre_ids   Int    @id @default(autoincrement())
-  genre_name String
 }

@@ -5,16 +5,6 @@ import prisma from "../config/prisma";
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-// export const fetchMovies = async () => {
-//   const response = await axios.get<{ results: Movie[] }>(`${BASE_URL}/movie`, {
-//     params: {
-//       api_key: TMDB_API_KEY,
-//       language: "ko-KR",
-//       page: 1,
-//     },
-//   });
-//   return response.data.results;
-// };
 
 // tmdb 모든 영화 마지막페이지까지 db에 저장
 export const AllMoviesSave = async () => {
@@ -33,7 +23,7 @@ export const AllMoviesSave = async () => {
     const totalPages = firstPageResponse.data.total_pages;
     console.log(`전체 페이지 수: ${totalPages}`);
 
-    for (let page = 1; page <= 3 /*totalPages*/; page++) {
+    for (let page = 1; page <= 3 /* totalPages */; page++) {
       const response = await axios.get<{ results: Movie[] }>(
         `${BASE_URL}/movie/popular`,
         {
@@ -52,7 +42,7 @@ export const AllMoviesSave = async () => {
           data: {
             title: movie.title,
             description: movie.overview,
-            genre_id: movie.genre_ids.length > 0 ? movie.genre_ids[0] : null,
+            genre_ids: movie.genre_ids.length > 0 ? movie.genre_ids : [], // 수정: genre_ids → genre_id
             views: 0,
           },
         });
@@ -67,19 +57,7 @@ export const AllMoviesSave = async () => {
   }
 };
 
-// tv프로그램 1페이지만 조회, db저장은 x
-export const fetchTVShows = async () => {
-  const response = await axios.get(`${BASE_URL}/tv`, {
-    params: {
-      api_key: TMDB_API_KEY,
-      language: "ko-KR",
-      page: 1,
-    },
-  });
-  return response.data.results;
-};
-
-// 장르 가져와서 genres DB에 저장
+// 장르 가져와서 genres DB에 id와 name 저장
 export const saveGenres = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/genre/movie/list`, {
@@ -93,10 +71,10 @@ export const saveGenres = async () => {
 
     for (const genre of genres) {
       await prisma.genre.upsert({
-        where: { genre_id: genre.id },
+        where: { genre_ids: genre.id },
         update: { genre_name: genre.name },
         create: {
-          genre_id: genre.id,
+          genre_ids: genre.id,
           genre_name: genre.name,
         },
       });

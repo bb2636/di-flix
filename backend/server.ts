@@ -5,7 +5,7 @@ import cors from "cors";
 
 import paymentrouter from "./src/routes/paymentRouter";
 import authrouter from "./src/routes/auth.route";
-import { saveGenres } from "./src/services/tmdbService";
+import { AllMoviesSave, saveGenres } from "./src/services/tmdbService";
 
 const app = express();
 
@@ -24,3 +24,9 @@ app.use("/api", paymentrouter);
 (async () => {
   await saveGenres();
 })();
+
+(async () => {
+  await AllMoviesSave();
+})();
+
+
