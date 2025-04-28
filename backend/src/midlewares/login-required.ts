@@ -10,7 +10,7 @@ export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction)
   }
   try {
     const decoded = verify<{
-      user_Id: number;
+      user_id: number;
       email?: string;
       is_member?: boolean;
       is_deleted?: boolean;
@@ -23,7 +23,7 @@ export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction)
     }
 
     req.user = {
-      user_Id: decoded.user_Id,
+      user_id: decoded.user_id,
       email: decoded.email,
       is_member: decoded.is_member,
       is_deleted: decoded.is_deleted,

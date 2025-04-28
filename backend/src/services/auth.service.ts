@@ -1,4 +1,3 @@
-import { pool } from '../utils/db';
 import bcrypt from 'bcrypt';
 import { Signup, Login } from "../types/auth";
 import { generateToken } from "../utils/jwt";
@@ -9,7 +8,7 @@ export const findUserByEmail = async (email: string) => {
   const user = await prisma.user.findUnique({
     where: { email },
     select: {
-      user_id: true, // 주의: DB칼럼명이 id로 되어 있어야 함
+      user_id: true, 
       password: true,
       is_member: true,
       is_deleted: true,
@@ -43,7 +42,7 @@ export const createUser = async (input: Signup, hashedPassword: string) => {
       user_id: true,
     },
   });
-  return { user_id: user.id };
+  return { user_id: user.user_id };
 };
 // 회원가입 로직
 export const signup = async (input: Signup) => {
@@ -86,7 +85,7 @@ export const login = async (input: Login) => {
   }
 
   const token = generateToken({
-    user_Id: user.user_id,
+    user_id: user.user_id,
     email,
     is_member: user.is_member,
     is_deleted: user.is_deleted,
@@ -99,7 +98,7 @@ export const login = async (input: Login) => {
 //회원탈퇴
 export const withdrawUser = async (userId: number) => {
   const result = await prisma.user.updateMany({
-    where: { id: userId },
+    where: { user_id: userId },
     data: { is_deleted: true },
   });
 
