@@ -2,7 +2,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import cors from 'cors';
+
+import paymentrouter from "./src/routes/paymentRouter";
 import authrouter from './src/routes/auth.route';
+
 
 const app = express();
 
@@ -15,3 +18,6 @@ const PORT: number = Number(process.env.PORT) || 4000;
 app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`);
 });
+
+app.use('/api',paymentrouter);
+
