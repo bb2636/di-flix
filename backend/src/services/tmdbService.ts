@@ -18,4 +18,3 @@ export const fetchPopularMovies = async () => {
 
   return response.data.results;
 };
-    
