@@ -3,61 +3,104 @@ import bcrypt from 'bcrypt';
 import { Signup, Login } from "../types/auth";
 import { generateToken } from "../utils/jwt";
 
-
-export const signup = async (input: Signup) => {
-  const { email, password } = input;
+// 이메일로 사용자 조회
+export const findUserByEmail = async (email: string) => {
   const client = await pool.connect();
-
   try {
-    const existingUser = await client.query('SELECT user_id FROM users WHERE email = $1', [email]);
-    if (existingUser.rows.length > 0) {
-      throw new Error('이미 가입된 이메일입니다.');
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const result = await client.query(
-      `INSERT INTO users (email, password, is_member, is_deleted) VALUES ($1, $2, false, true) RETURNING id`,
-      [email, hashedPassword]
+    const result = await client.query<{ user_id: number; password: string; is_member: boolean; is_deleted: boolean }>(
+      'SELECT user_id, password, is_member, is_deleted FROM users WHERE email = $1',
+      [email]
     );
-
-    return { user_Id: result.rows[0].user_id };
+    return result.rows[0];
   } finally {
     client.release();
   }
 };
 
+// 비밀번호 해싱
+export const hashPassword = async (password: string) => {
+  return await bcrypt.hash(password, 10);
+};
+
+// 사용자 생성
+export const createUser = async (input: Signup, hashedPassword: string) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query<{ user_id: number }>(
+      `INSERT INTO users (email, password, is_member, is_deleted)
+       VALUES ($1, $2, $3, $4)
+       RETURNING user_id`,
+      [input.email, hashedPassword, input.is_member, input.is_deleted]
+    );
+    return result.rows[0];
+  } finally {
+    client.release();
+  }
+};
+
+// 회원가입 로직
+export const signup = async (input: Signup) => {
+  const { email, password, is_member = false, is_deleted = true } = input;
+
+  const existingUser = await findUserByEmail(email);
+  if (existingUser) {
+    throw new Error('이미 가입된 이메일입니다.');
+  }
+
+  const hashedPassword = await hashPassword(password);
+
+  // 사용자 생성 시 기본값을 포함한 입력 사용
+  const newUser = await createUser({ email, password, is_member, is_deleted }, hashedPassword);
+
+  return { user_Id: newUser.user_id };
+};
+
+// 비밀번호 검증
+export const validatePassword = async (plainPassword: string, hashedPassword: string) => {
+  return await bcrypt.compare(plainPassword, hashedPassword);
+};
+
+// 로그인 로직
 export const login = async (input: Login) => {
   const { email, password } = input;
-  const client = await pool.connect();
 
+  const user = await findUserByEmail(email);
+  if (!user) {
+    throw new Error('유효하지 않은 이메일 또는 비밀번호');
+  }
+
+  if (user.is_deleted === false) {
+    throw new Error('탈퇴한 회원입니다.');
+  }
+
+  const isPasswordValid = await validatePassword(password, user.password);
+  if (!isPasswordValid) {
+    throw new Error('유효하지 않은 이메일 또는 비밀번호');
+  }
+
+  const token = generateToken({
+    user_Id: user.user_id,
+    email,
+    is_member: user.is_member,
+    is_deleted: user.is_deleted,
+  });
+
+  return { token };
+};
+
+
+//회원탈퇴
+export const withdrawUser = async (userId: number) => {
+  const client = await pool.connect();
   try {
-    const userResult = await client.query(
-      'SELECT user_id, password, is_member, is_deleted FROM users WHERE email = $1',
-      [email]
+    const result = await client.query(
+      'UPDATE users SET is_deleted = true WHERE user_id = $1',
+      [userId]
     );
 
-    if (userResult.rowCount === 0) {
-      throw new Error('유효하지 않은 이메일 또는 비밀번호');
+    if (result.rowCount === 0) {
+      throw new Error('유저를 찾을 수 없습니다.');
     }
-
-    const user = userResult.rows[0];
-    if (user.is_deleted === false) {
-      throw new Error('탈퇴한 회원입니다.');
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new Error('유효하지 않은 이메일 또는 비밀번호');
-    }
-
-    const token = generateToken({
-      user_Id: user.user_id,
-      email,
-      is_member: user.is_member,
-      is_deleted: user.is_deleted,
-    });
-
-    return { token };
   } finally {
     client.release();
   }

@@ -1,91 +1,45 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import { pool } from '../utils/db';
-import { generateToken } from "../utils/jwt";
 import { AuthRequest } from '../midlewares/authrequest';
-
+import { signup, login as serviceLogin, withdrawUser } from '../services/auth.service';
 
 // 회원가입
 export const register = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const client = await pool.connect();
 
   try {
-    // 이미 가입된 이메일인지 확인
-    const existingUser = await client.query<{ user_id: number }>(
-      'SELECT user_id FROM users WHERE email = $1',
-      [email]
-    );
-
-    if (existingUser.rows.length > 0) {
-      res.status(400).json({ message: '이미 가입된 이메일입니다.' });
-      return;
+    const result = await signup({ email, password, is_member: false, is_deleted: true });
+    res.status(201).json({ message: '회원가입 성공', ...result });
+  } catch (err) {
+    if (err instanceof Error) {
+      if (err.message === '이미 가입된 이메일입니다.') {
+        res.status(400).json({ message: err.message });
+      } else {
+        console.error(err);
+        res.status(500).json({ message: '서버 오류' });
+      }
+    } else {
+      console.error('Unexpected error:', err);
+      res.status(500).json({ message: '알 수 없는 오류가 발생했습니다.' });
     }
-
-    // 비밀번호 해싱
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // 기본값: is_member = false, is_deleted = true(true일때 정상회원)
-    const result = await client.query(
-      `INSERT INTO users (email, password, is_member, is_deleted)
-       VALUES ($1, $2, $3, $4)
-       RETURNING user_id`,
-      [email, hashedPassword, false, true]
-    );
-
-    res.status(201).json({ message: '회원가입 성공', user_Id: result.rows[0].user_id });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: '서버 오류' });
-  } finally {
-    client.release();
   }
 };
 
   // 로그인
   export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    const client = await pool.connect();
   
     try {
-      const userResult = await client.query(
-        'SELECT user_id, password, is_member, is_deleted FROM users WHERE email = $1',
-        [email]
-      );
-  
-      if (userResult.rowCount === 0) {
-        res.status(400).json({ message: '유효하지 않은 이메일 또는 비밀번호' });
-        return;
-      }
-  
-      const user = userResult.rows[0];
-  
-      if (user.is_deleted === false) {
-        res.status(400).json({ message: '탈퇴한 회원입니다.' });
-        return;
-      }
-  
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-      if (!isPasswordValid) {
-        res.status(400).json({ message: '유효하지 않은 이메일 또는 비밀번호' });
-        return;
-      }
-  
-      // 토큰 생성 및 응답도 try 내부에서 처리
-      const token = generateToken({
-        user_Id: user.user_id,
-        email,
-        is_member: user.is_member,
-        is_deleted: user.is_deleted,
-      });
-  
+      const token = await serviceLogin({ email, password });
       res.status(200).json({ token });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: '서버 오류' });
-    } finally {
-      client.release();
+    } catch (err) {
+      if (err instanceof Error && err.message === '유효하지 않은 이메일 또는 비밀번호') {
+        res.status(400).json({ message: err.message });
+      } else if (err instanceof Error && err.message === '탈퇴한 회원입니다.') {
+        res.status(400).json({ message: err.message });
+      } else {
+        console.error(err);
+        res.status(500).json({ message: '서버 오류' });
+      }
     }
   };
 
@@ -110,25 +64,15 @@ export const register = async (req: Request, res: Response) => {
       return;
     }
   
-    const client = await pool.connect();
-  
     try {
-      // 탈퇴 처리: is_deleted 필드를 true로 변경
-      const result = await client.query(
-        'UPDATE users SET is_deleted = true WHERE user_id = $1',
-        [userId]
-      );
-  
-      if (result.rowCount === 0) {
-        res.status(404).json({ message: '유저를 찾을 수 없습니다.' });
-        return;
-      }
-  
+      await withdrawUser(userId);
       res.status(200).json({ message: '회원 탈퇴가 완료되었습니다.' });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: '서버 오류' });
-    } finally {
-      client.release();
+      if (error instanceof Error && error.message === '유저를 찾을 수 없습니다.') {
+        res.status(404).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: '서버 오류' });
+      }
     }
   };
