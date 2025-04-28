@@ -2,11 +2,11 @@ import express from 'express';
 import { register, login, logout, withdraw } from '../controllers/authController';
 import { verifyToken } from '../midlewares/login-required';
 
-const router = express.Router();
+const authrouter = express.Router();
 
-router.post('/users/signup', register);
-router.post('/users/login', login);
-router.post('/users/logout', logout);
-router.post('/users/withdraw', verifyToken, withdraw);
+authrouter.post('/users/signup', register);
+authrouter.post('/users/login', login);
+authrouter.post('/users/logout', logout);
+authrouter.post('/users/withdraw', verifyToken, withdraw);
 
-export default router;
+export default authrouter;
