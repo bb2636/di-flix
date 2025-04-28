@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -13,29 +7,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-model users {
+
+model User {
   user_id    Int     @id @default(autoincrement()) @map("user_id")
-  email String  @unique 
-  password  String?
-  is_member   Boolean @default(false) // 멤버십 유무 (기본값 false)
-  is_deleted  Boolean @default(true) // 탈퇴 여부 (기본값 true) 탈퇴 시 false
+  email      String  @unique 
+  password   String?
+  is_member  Boolean @default(false)
+  is_deleted Boolean @default(true)
+
+  watchHistories WatchHistory[]  // 추가
+  wishlists      Wishlist[]      // 추가
 }
 
-model category (
-    category_id Int  @id @default(autoincrement())
-    category_name String 
-);
+model Category {
+  category_id   Int    @id @default(autoincrement())
+  category_name String
+
+  contents Content[]   // 추가
+}
 
 model Content {
-  movie_id    Int       @id @default(autoincrement())
-  title       String    @db.VarChar(255)
-  description String?   @db.Text
-  category_id Int? 
-  views       Int       @default(0)
+  movie_id     Int       @id @default(autoincrement())
+  title        String    @db.VarChar(255)
+  description  String?   @db.Text
+  category_id  Int? 
+  views        Int       @default(0)
 
-  category    Category? @relation(fields: [category_id], references: [category_id])
-  watchHistory WatchHistory[]
-  wishlist    Wishlist[]
+  category     Category? @relation(fields: [category_id], references: [category_id])
+
+  watchHistories WatchHistory[]
+  wishlists      Wishlist[]
 }
 
 model WatchHistory {
@@ -43,7 +44,7 @@ model WatchHistory {
   user_id    Int?
   movie_id   Int?
 
-  user   User?   @relation(fields: [user_id], references: [user_id])
+  user   User?    @relation(fields: [user_id], references: [user_id])
   movie  Content? @relation(fields: [movie_id], references: [movie_id])
 
   timestamp DateTime @default(now())
@@ -54,6 +55,6 @@ model Wishlist {
   user_id     Int?
   movie_id    Int?
 
-  user  User?   @relation(fields: [user_id], references: [user_id])
-  movie Content? @relation(fields: [movie_id], references: [movie_id])
+  user   User?    @relation(fields: [user_id], references: [user_id])
+  movie  Content? @relation(fields: [movie_id], references: [movie_id])
 }
