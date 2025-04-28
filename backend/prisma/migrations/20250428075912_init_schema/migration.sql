@@ -10,11 +10,11 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Category" (
-    "category_id" SERIAL NOT NULL,
-    "category_name" TEXT NOT NULL,
+CREATE TABLE "Genre" (
+    "genre_ids" INTEGER NOT NULL,
+    "genre_name" TEXT NOT NULL,
 
-    CONSTRAINT "Category_pkey" PRIMARY KEY ("category_id")
+    CONSTRAINT "Genre_pkey" PRIMARY KEY ("genre_ids")
 );
 
 -- CreateTable
@@ -22,7 +22,7 @@ CREATE TABLE "Content" (
     "movie_id" SERIAL NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "description" TEXT,
-    "category_id" INTEGER,
+    "genre_ids" INTEGER,
     "views" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Content_pkey" PRIMARY KEY ("movie_id")
@@ -51,7 +51,7 @@ CREATE TABLE "Wishlist" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "Content" ADD CONSTRAINT "Content_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "Category"("category_id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Content" ADD CONSTRAINT "Content_genre_ids_fkey" FOREIGN KEY ("genre_ids") REFERENCES "Genre"("genre_ids") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "WatchHistory" ADD CONSTRAINT "WatchHistory_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE SET NULL ON UPDATE CASCADE;
