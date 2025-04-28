@@ -2,19 +2,27 @@ import { pool } from '../utils/db';
 import bcrypt from 'bcrypt';
 import { Signup, Login } from "../types/auth";
 import { generateToken } from "../utils/jwt";
+import prisma from '../config/prisma';
 
 // 이메일로 사용자 조회
 export const findUserByEmail = async (email: string) => {
-  const client = await pool.connect();
-  try {
-    const result = await client.query<{ user_id: number; password: string; is_member: boolean; is_deleted: boolean }>(
-      'SELECT user_id, password, is_member, is_deleted FROM users WHERE email = $1',
-      [email]
-    );
-    return result.rows[0];
-  } finally {
-    client.release();
-  }
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: {
+      user_id: true, // 주의: DB칼럼명이 id로 되어 있어야 함
+      password: true,
+      is_member: true,
+      is_deleted: true,
+    },
+  });
+  if (!user) return null;
+
+  return {
+    user_id: user.user_id,
+    password: user.password,
+    is_member: user.is_member,
+    is_deleted: user.is_deleted,
+  };
 };
 
 // 비밀번호 해싱
@@ -24,20 +32,19 @@ export const hashPassword = async (password: string) => {
 
 // 사용자 생성
 export const createUser = async (input: Signup, hashedPassword: string) => {
-  const client = await pool.connect();
-  try {
-    const result = await client.query<{ user_id: number }>(
-      `INSERT INTO users (email, password, is_member, is_deleted)
-       VALUES ($1, $2, $3, $4)
-       RETURNING user_id`,
-      [input.email, hashedPassword, input.is_member, input.is_deleted]
-    );
-    return result.rows[0];
-  } finally {
-    client.release();
-  }
+  const user = await prisma.user.create({
+    data: {
+      email: input.email,
+      password: hashedPassword,
+      is_member: input.is_member,
+      is_deleted: input.is_deleted,
+    },
+    select: {
+      user_id: true,
+    },
+  });
+  return { user_id: user.id };
 };
-
 // 회원가입 로직
 export const signup = async (input: Signup) => {
   const { email, password, is_member = false, is_deleted = true } = input;
@@ -91,17 +98,12 @@ export const login = async (input: Login) => {
 
 //회원탈퇴
 export const withdrawUser = async (userId: number) => {
-  const client = await pool.connect();
-  try {
-    const result = await client.query(
-      'UPDATE users SET is_deleted = true WHERE user_id = $1',
-      [userId]
-    );
+  const result = await prisma.user.updateMany({
+    where: { id: userId },
+    data: { is_deleted: true },
+  });
 
-    if (result.rowCount === 0) {
-      throw new Error('유저를 찾을 수 없습니다.');
-    }
-  } finally {
-    client.release();
+  if (result.count === 0) {
+    throw new Error('유저를 찾을 수 없습니다.');
   }
 };
