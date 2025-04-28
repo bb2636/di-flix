@@ -20,3 +20,40 @@ model users {
   is_member   Boolean @default(false) // 멤버십 유무 (기본값 false)
   is_deleted  Boolean @default(true) // 탈퇴 여부 (기본값 true) 탈퇴 시 false
 }
+
+model category (
+    category_id Int  @id @default(autoincrement())
+    category_name String 
+);
+
+model Content {
+  movie_id    Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  description String?   @db.Text
+  category_id Int? 
+  views       Int       @default(0)
+
+  category    Category? @relation(fields: [category_id], references: [category_id])
+  watchHistory WatchHistory[]
+  wishlist    Wishlist[]
+}
+
+model WatchHistory {
+  history_id Int      @id @default(autoincrement())
+  user_id    Int?
+  movie_id   Int?
+
+  user   User?   @relation(fields: [user_id], references: [user_id])
+  movie  Content? @relation(fields: [movie_id], references: [movie_id])
+
+  timestamp DateTime @default(now())
+}
+
+model Wishlist {
+  wishlist_id Int     @id @default(autoincrement())
+  user_id     Int?
+  movie_id    Int?
+
+  user  User?   @relation(fields: [user_id], references: [user_id])
+  movie Content? @relation(fields: [movie_id], references: [movie_id])
+}
