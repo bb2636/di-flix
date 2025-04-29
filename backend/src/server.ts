@@ -6,7 +6,8 @@ import cors from "cors";
 
 import paymentrouter from "./routes/paymentRouter";
 import authrouter from "./routes/auth.route";
-import contentRouter from "./routes/contentRouter"; // 🔥 추가 (컨텐츠 조회용 라우터)
+import contentRouter from "./routes/contentRouter";
+import wishlistRouter from "./routes/wishlistRouter";
 import { AllMoviesSave, saveGenres } from "./services/tmdbService";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/users", authrouter); // 회원가입, 로그인 관련
 app.use("/api", paymentrouter); // 결제 관련
 app.use("/", contentRouter); // 컨텐츠 조회 관련
+app.use("/wishlist", wishlistRouter);
 
 // ✅ 서버 시작
 app.listen(PORT, () => {
