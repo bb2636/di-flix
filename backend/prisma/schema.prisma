@@ -20,24 +20,35 @@ model User {
 }
 
 model Genre {
-  genre_ids   Int[]    @id
-  genre_name String
+genre_ids    Int      @id
+genre_name   String
 
-  contents   Content[] @relation("GenreToContent")
+contentGenres ContentGenre[]   
 }
 
 model Content {
-  movie_id     Int       @id @default(autoincrement())
-  title        String    @db.VarChar(255)
-  description  String?   @db.Text
-  genre_ids    Int[]     // 수정: category_id → genre_ids
-  views        Int       @default(0)
+movie_id     Int      @id @default(autoincrement())
+title        String   @db.VarChar(255)
+description  String?  @db.Text
+views        Int      @default(0)
 
-  genre        Genre?    @relation(name: "GenreToContent", fields: [genre_ids], references: [genre_ids]) // 수정
+contentGenres ContentGenre[]  
 
-  watchHistories WatchHistory[]
-  wishlists      Wishlist[]
+watchHistories WatchHistory[]
+wishlists      Wishlist[]
 }
+
+model ContentGenre {
+  CG_id      Int    @id @default(autoincrement())  
+  movie_id   Int                                    
+  genre_ids  Int                                    
+
+  content    Content @relation(fields: [movie_id], references: [movie_id])  
+  genre      Genre   @relation(fields: [genre_ids], references: [genre_ids])    
+
+  @@unique([movie_id, genre_ids])  
+}
+
 
 model WatchHistory {
   history_id Int      @id @default(autoincrement())

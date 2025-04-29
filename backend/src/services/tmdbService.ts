@@ -22,7 +22,7 @@ export const AllMoviesSave = async () => {
     const totalPages = firstPageResponse.data.total_pages;
     console.log(`전체 페이지 수: ${totalPages}`);
 
-    for (let page = 1; page <= 3 /* totalPages */; page++) {
+    for (let page = 1; page <= 5 /*totalPages*/; page++) {
       const response = await axios.get<{ results: Movie[] }>(
         `${BASE_URL}/movie/popular`,
         {
@@ -37,19 +37,24 @@ export const AllMoviesSave = async () => {
       const movies = response.data.results;
 
       for (const movie of movies) {
-        await prisma.content.create({
+        const content = await prisma.content.create({
           data: {
             title: movie.title,
             description: movie.overview,
-            genre_ids: movie.genre_ids.length > 0 ? movie.genre_ids : [], // 수정: genre_ids → genre_id
             views: 0,
           },
         });
+
+        for (const genreId of movie.genre_ids) {
+          await prisma.contentGenre.create({
+            data: {
+              movie_id: content.movie_id,
+              genre_ids: genreId,
+            },
+          });
+        }
       }
-
-      console.log(`${page}페이지 저장 완료`);
     }
-
     console.log("전체 영화 저장 완료");
   } catch (error) {
     console.error("영화 데이터 저장 실패:", error);
@@ -70,12 +75,9 @@ export const saveGenres = async () => {
 
     for (const genre of genres) {
       await prisma.genre.upsert({
-        where: { genre_ids: genre.id },
-        update: { genre_name: genre.name },
-        create: {
-          genre_ids: genre.id,
-          genre_name: genre.name,
-        },
+        where: { genre_ids: genre.id }, // 장르가 이미 있는지 확인
+        update: { genre_name: genre.name }, // 이미 있으면 이름 업데이트
+        create: { genre_ids: genre.id, genre_name: genre.name }, // 없으면 새로 생성
       });
     }
 
