@@ -6,7 +6,7 @@ paymentrouter.post("/payment", (req, res) => {
   try {
     const paymentResult = requsetPayment(req.body);
     res.json(paymentResult);
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "결제 요청 실패(error:500)" });
   }
 });

@@ -3,9 +3,9 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 
-import paymentrouter from "./src/routes/paymentRouter";
-import authrouter from "./src/routes/auth.route";
-import { AllMoviesSave, saveGenres } from "./src/services/tmdbService";
+import paymentrouter from "./routes/paymentRouter";
+import authrouter from "./routes/auth.route";
+import { AllMoviesSave, saveGenres } from "./services/tmdbService";
 
 const app = express();
 
@@ -28,5 +28,3 @@ app.use("/api", paymentrouter);
 (async () => {
   await AllMoviesSave();
 })();
-
-

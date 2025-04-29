@@ -13,4 +13,3 @@ export const getCache = (key: string) => {
   }
   return cached.data;
 };
-

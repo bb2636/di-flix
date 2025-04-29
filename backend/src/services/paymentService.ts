@@ -15,10 +15,10 @@ export const requsetPayment = async (paymentdata: any) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return response.data; // toss 데이터 받아서 data 리턴
-  } catch (error) {
+  } catch {
     throw new Error("결제 요청 실패");
   }
 };

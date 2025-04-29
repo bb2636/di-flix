@@ -58,7 +58,7 @@ export const signup = async (input: Signup) => {
   // 사용자 생성 시 기본값을 포함한 입력 사용
   const newUser = await createUser(
     { email, password, is_member, is_deleted },
-    hashedPassword
+    hashedPassword,
   );
 
   return { user_Id: newUser.user_id };
@@ -67,7 +67,7 @@ export const signup = async (input: Signup) => {
 // 비밀번호 검증
 export const validatePassword = async (
   plainPassword: string,
-  hashedPassword: string
+  hashedPassword: string,
 ) => {
   return await bcrypt.compare(plainPassword, hashedPassword);
 };

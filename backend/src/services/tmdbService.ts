@@ -5,7 +5,6 @@ import prisma from "../config/prisma";
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-
 // tmdb 모든 영화 마지막페이지까지 db에 저장
 export const AllMoviesSave = async () => {
   try {
@@ -32,7 +31,7 @@ export const AllMoviesSave = async () => {
             language: "ko-KR",
             page: page,
           },
-        }
+        },
       );
 
       const movies = response.data.results;
