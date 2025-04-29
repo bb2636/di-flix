@@ -4,16 +4,12 @@ import { verifyToken } from "../middlewares/login-required";
 
 const wishlistRouter = Router();
 
-wishlistRouter.post(
-  "/wishlist/:movie_id",
-  verifyToken,
-  wishlistController.addWishlist,
-);
+wishlistRouter.post("/:movie_id", verifyToken, wishlistController.addWishlist);
 wishlistRouter.delete(
-  "/wishlist/:movie_id",
+  "/:movie_id",
   verifyToken,
   wishlistController.removeWishlist,
 );
-wishlistRouter.get("/wishlist", verifyToken, wishlistController.getWishlist);
+wishlistRouter.get("/:movie_id", verifyToken, wishlistController.getWishlist);
 
 export default wishlistRouter;
