@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { requsetPayment } from "../services/paymentService";
-import { activateMembership } from "../services/auth.service"; // 1단계에서 만든거
+import { activateMembership } from "../services/auth.service";
 
 export const confirmPayment = async (req: Request, res: Response) => {
   const { paymentKey, orderId, amount } = req.body;
