@@ -4,7 +4,7 @@ import { AuthRequest } from "../middlewares/authrequest";
 
 export const addWishlist = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.user_id;
-  const movieId = Number(req.params.movieId);
+  const movieId = Number(req.params.movie_id);
 
   if (!userId || isNaN(movieId)) {
     res.status(400).json({ message: "잘못된 요청" });
@@ -17,7 +17,7 @@ export const addWishlist = async (req: AuthRequest, res: Response) => {
 
 export const removeWishlist = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.user_id;
-  const movieId = Number(req.params.movieId);
+  const movieId = Number(req.params.movie_id);
 
   if (!userId || isNaN(movieId)) {
     res.status(400).json({ message: "잘못된 요청" });
