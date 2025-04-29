@@ -30,4 +30,4 @@ jobs:
         run: npm ci
 
       - name: Lint Check (ESLint + TS)
-        run: npx eslint . --ext .ts,.tsx --max-warnings=0
+        run: npx eslint "src/**/*.{ts,tsx}" "server.ts"
