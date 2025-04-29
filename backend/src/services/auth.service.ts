@@ -116,3 +116,12 @@ export const withdrawUser = async (userId: number) => {
     throw new Error("유저를 찾을 수 없습니다.");
   }
 };
+
+// ✅ 멤버십 활성화 함수
+export const activateMembership = async (userId: number) => {
+  const updatedUser = await prisma.user.update({
+    where: { user_id: userId },
+    data: { is_member: true },
+  });
+  return updatedUser;
+};
