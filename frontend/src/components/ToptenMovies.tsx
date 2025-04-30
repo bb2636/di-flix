@@ -35,7 +35,9 @@ const ToptenMovies = () => {
               alt={movie.title}
               className={styles.thumbnail}
             />
-            <p className={styles.titleText}>{idx + 1}. {movie.title}</p>
+            <p className={styles.titleText}>
+              {idx + 1}. {movie.title}
+            </p>
           </div>
         ))}
       </div>

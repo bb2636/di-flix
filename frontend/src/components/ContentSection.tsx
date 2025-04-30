@@ -1,7 +1,7 @@
 // src/components/ContentSection.tsx
-import React from 'react';
-import styles from '../styles/ContentSection.module.css';
-import poster from '../assets/poster.jpeg'
+import React from "react";
+import styles from "../styles/ContentSection.module.css";
+import poster from "../assets/poster.jpeg";
 
 interface ContentSectionProps {
   title: string;
