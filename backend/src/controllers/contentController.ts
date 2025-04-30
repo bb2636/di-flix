@@ -2,7 +2,11 @@
 import { AuthRequest } from "../middlewares/authrequest"; // 인증된 사용자 타입
 import prisma from "../config/prisma"; // Prisma 클라이언트
 import contentRouter from "../routes/contentRouter";
-import { fetchMovies, fetchMoviesByGenre } from "../services/tmdbService"; // TMDB 서비스 불러오기
+import {
+  fetchMovies,
+  fetchTopMovies,
+  fetchMoviesByGenre,
+} from "../services/tmdbService"; // TMDB 서비스 불러오기
 import { Request, Response } from "express";
 
 // 🎯 컨텐츠 상세 조회 (멤버십 체크 포함)
@@ -35,15 +39,40 @@ export const getContentDetail = async (req: AuthRequest, res: Response) => {
 // 영화 목록 조회 (프론트에 영화 목록 뿌리기)
 export const searchMovieTmDB = async (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string, 10) || 1; // 페이지 번호 (기본값 1)
-
+  const sortOrder = req.query.sortOrder || "asc"; // 정렬 방식 (기본값 내림차순)
   try {
     const movies = await fetchMovies(page); // TMDB에서 영화 목록 받아오기
+
+    // 날짜순으로 정렬 (오름차순 or 내림차순)
+    movies.sort((a: any, b: any) => {
+      const dateA = new Date(a.release_date).getTime();
+      const dateB = new Date(b.release_date).getTime();
+
+      if (sortOrder === "asc") {
+        return dateA - dateB; // 오름차순
+      } else {
+        return dateB - dateA; // 내림차순
+      }
+    });
     res.status(200).json(movies); // 영화 목록 프론트에 반환
   } catch {
     res.status(500).json({ message: "영화 목록 가져오기 실패" });
   }
 };
 
+// 인기 TOP 10 영화 목록 조회
+export const searchTopMovieTmDB = async (req: Request, res: Response) => {
+  const page = 1; // 1 페이지
+
+  try {
+    const movie = await fetchTopMovies(page);
+    const topMovies = movie.slice(0, 10);
+
+    res.status(200).json(topMovies);
+  } catch {
+    res.status(500).json({ message: "탑 10 영화 가져오기 실패" });
+  }
+};
 // 장르별 영화 목록 조회
 export const searchGenreMovieTmDB = async (req: Request, res: Response) => {
   const genreId = req.params.genre_id; // URL에서 장르 ID 가져오기

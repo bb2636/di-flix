@@ -21,6 +21,25 @@ export const fetchMovies = async (page: number = 1) => {
   }
 };
 
+// 인기영화 10개만 받아오기
+
+export const fetchTopMovies = async (page: number = 1) => {
+  try {
+    const response = await axios.get(`${TMDB_BASE_URL}/movie/popular`, {
+      params: {
+        api_key: TMDB_API_KEY, // TMDB API 키
+        language: "ko-KR", // 한국어로 결과 반환
+        page: page, // 페이지 번호
+      },
+    });
+
+    return response.data.results; // 영화 목록 반환
+  } catch (error) {
+    console.error("TMDB에서 TOP 10 영화 목록 가져오기 실패:", error);
+    throw new Error("TMDB에서 TOP 10 영화 목록 가져오기 실패");
+  }
+};
+
 // 장르별 영화 목록 받아오기
 export const fetchMoviesByGenre = async (genreId: string, page: number = 1) => {
   try {
