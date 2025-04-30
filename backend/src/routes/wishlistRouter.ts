@@ -16,4 +16,6 @@ wishlistRouter.delete(
   wishlistController.removeWishlist,
 );
 
+wishlistRouter.get("/", verifyToken, wishlistController.getWishlist);
+
 export default wishlistRouter;
