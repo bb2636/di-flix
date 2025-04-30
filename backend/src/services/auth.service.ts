@@ -30,11 +30,11 @@ export const hashPassword = async (password: string) => {
 };
 
 // 사용자 생성
-export const createUser = async (input: Signup, hashedPassword: string) => {
+export const createUser = async (input: Signup) => {
   const user = await prisma.user.create({
     data: {
       email: input.email,
-      password: hashedPassword,
+      password: input.password,
       is_member: input.is_member,
       is_deleted: input.is_deleted,
     },
@@ -57,8 +57,7 @@ export const signup = async (input: Signup) => {
 
   // 사용자 생성 시 기본값을 포함한 입력 사용
   const newUser = await createUser(
-    { email, password, is_member, is_deleted },
-    hashedPassword,
+    { email, password:hashedPassword, is_member, is_deleted },
   );
 
   return { user_Id: newUser.user_id };

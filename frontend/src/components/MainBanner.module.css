@@ -1,0 +1,61 @@
+/* src/components/MainBanner.module.css */
+
+.bannerWrapper {
+    display: flex;
+    padding: 48px 24px;
+    background-color: #1e1e1e;
+    color: white;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .posterWrapper {
+    flex-shrink: 0;
+  }
+  
+  .posterImage {
+    width: 240px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+  
+  .descriptionWrapper {
+    max-width: 500px;
+  }
+  
+  .title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .meta {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 16px;
+  }
+  
+  .summary {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    white-space: pre-line;
+  }
+  
+  .watchButton {
+    padding: 10px 20px;
+    background-color: #cdb0b6;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .watchButton:hover {
+    background-color: #e6c7cf;
+  }
+  
