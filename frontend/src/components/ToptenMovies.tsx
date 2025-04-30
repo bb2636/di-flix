@@ -18,6 +18,7 @@ const ToptenMovies = () => {
         const data = await fetchToptenMovies();
         setMovies(data);
       } catch (error) {
+        console.log(error);
         console.error("TOP 10 불러오기 실패", error);
       }
     };
