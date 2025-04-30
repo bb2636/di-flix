@@ -19,6 +19,6 @@ contentRouter.get("/top10", searchTopMovieTmDB);
 contentRouter.get("/genre/:genre_id", searchGenreMovieTmDB);
 
 // 상세 조회 (멤버만 가능)
-contentRouter.get("/:movie_id", verifyToken, getContentDetail);
+contentRouter.get("/", verifyToken, getContentDetail);
 
 export default contentRouter;

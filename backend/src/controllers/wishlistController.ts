@@ -11,8 +11,12 @@ export const addWishlist = async (req: AuthRequest, res: Response) => {
     return;
   }
 
-  await wishlistService.addWishlist(userId, movieId);
-  res.status(201).json({ message: "찜 추가 완료" });
+  try {
+    await wishlistService.addWishlist(userId, movieId);
+    res.status(201).json({ message: "찜 추가 완료" });
+  } catch (err) {
+    res.status(400).json({ message: (err as Error).message });
+  }
 };
 
 export const removeWishlist = async (req: AuthRequest, res: Response) => {
@@ -24,18 +28,26 @@ export const removeWishlist = async (req: AuthRequest, res: Response) => {
     return;
   }
 
-  await wishlistService.removeWishlist(userId, movieId);
-  res.status(200).json({ message: "찜 삭제 완료" });
+  try {
+    await wishlistService.removeWishlist(userId, movieId);
+    res.status(200).json({ message: "찜 삭제 완료" });
+  } catch (err) {
+    res.status(400).json({ message: (err as Error).message });
+  }
 };
 
 export const getWishlist = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.user_id;
 
   if (!userId) {
-    res.status(401).json({ message: "로그인 필요" });
+    res.status(401).json({ message: "로그인이 필요합니다." });
     return;
   }
 
-  const wishlist = await wishlistService.getWishlist(userId);
-  res.status(200).json({ wishlist });
+  try {
+    const wishlist = await wishlistService.getWishlist(userId);
+    res.status(200).json({ wishlist });
+  } catch (err) {
+    res.status(400).json({ message: (err as Error).message });
+  }
 };
