@@ -9,7 +9,6 @@ import paymentrouter from "./routes/paymentRouter";
 import authrouter from "./routes/auth.route";
 import contentRouter from "./routes/contentRouter";
 import wishlistRouter from "./routes/wishlistRouter";
-import { AllMoviesSave, saveGenres } from "./services/tmdbService";
 
 const app = express();
 const PORT: number = Number(process.env.PORT) || 4000;
@@ -34,9 +33,3 @@ app.use("/wishlist", wishlistRouter);
 app.listen(PORT, () => {
   console.log(`✅ Server listening on http://localhost:${PORT}`);
 });
-
-// ✅ 초기 데이터 세팅
-(async () => {
-  await saveGenres();
-  await AllMoviesSave();
-})();

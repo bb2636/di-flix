@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import * as wishlistService from "../services/wishlistService";
 import { AuthRequest } from "../middlewares/authrequest";
 
