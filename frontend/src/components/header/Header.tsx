@@ -17,15 +17,21 @@ const Header = () => {
       <div className={styles.auth}>
         {isLoggedIn ? (
           <>
-            <Link to="/mypage" className={styles.authTextButton}>MYPAGE</Link>
+            <Link to="/mypage" className={styles.authTextButton}>
+              MYPAGE
+            </Link>
             <span className={styles.separator}> | </span>
             <LogoutButton />
           </>
         ) : (
           <>
-            <Link to="/signup" className={styles.authTextButton}>SIGN UP</Link>
+            <Link to="/signup" className={styles.authTextButton}>
+              SIGN UP
+            </Link>
             <span className={styles.separator}> | </span>
-            <Link to="/login" className={styles.authTextButton}>LOGIN</Link>
+            <Link to="/login" className={styles.authTextButton}>
+              LOGIN
+            </Link>
           </>
         )}
       </div>
