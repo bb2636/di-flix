@@ -1,6 +1,6 @@
 // src/pages/MainPage.tsx
 import React from 'react';
-import styles from './MainPage.module.css';
+import styles from '../styles/MainPage.module.css';
 import MainBanner from '../components/MainBanner';
 import ContentSection from '../components/ContentSection';
 import CategorySelector from '../components/CategorySelector';

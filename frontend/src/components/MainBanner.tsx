@@ -1,6 +1,6 @@
 // src/components/MainBanner.tsx
 import React from 'react';
-import styles from './MainBanner.module.css';
+import styles from '../styles/MainBanner.module.css';
 import poster from '../assets/poster.jpeg'
 
 const MainBanner = () => {

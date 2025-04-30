@@ -1,12 +1,13 @@
+import { Link } from "react-router-dom";
 import styles from './Header.module.css';
 
 const Header = () => (
   <header className={styles.header}>
     <div className={styles.logo}>NETFLEX</div>
     <div className={styles.auth}>
-        <button className={styles.authTextButton}>SIGN IN</button>
-        <span className={styles.separator}> | </span>
-        <button className={styles.authTextButton}>LOGIN</button>
+      <Link to="/signup" className={styles.authTextButton}>SIGN IN</Link>
+      <span className={styles.separator}> | </span>
+      <Link to="/login" className={styles.authTextButton}>LOGIN</Link>
     </div>
   </header>
 );

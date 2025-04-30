@@ -56,9 +56,12 @@ export const signup = async (input: Signup) => {
   const hashedPassword = await hashPassword(password);
 
   // 사용자 생성 시 기본값을 포함한 입력 사용
-  const newUser = await createUser(
-    { email, password:hashedPassword, is_member, is_deleted },
-  );
+  const newUser = await createUser({
+    email,
+    password: hashedPassword,
+    is_member,
+    is_deleted,
+  });
 
   return { user_Id: newUser.user_id };
 };

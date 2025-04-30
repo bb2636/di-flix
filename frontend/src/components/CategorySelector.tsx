@@ -1,6 +1,6 @@
 // src/components/CategorySelector.tsx
 import React from 'react';
-import styles from './CategorySelector.module.css';
+import styles from '../styles/CategorySelector.module.css';
 
 const CategorySelector = () => {
   return (
