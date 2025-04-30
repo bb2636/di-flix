@@ -1,0 +1,27 @@
+.buttonGroup {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
+  
+  .logoutButton,
+  .withdrawButton {
+    flex: 1;
+    padding: 0.8rem;
+    margin: 0 0.25rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .logoutButton {
+    background-color: #e6c29f;
+    color: black;
+  }
+  
+  .withdrawButton {
+    background-color: #ff5f5f;
+    color: white;
+  }
+  

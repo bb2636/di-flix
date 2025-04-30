@@ -4,8 +4,9 @@ import App from "./App";
 import ReactDOM from "react-dom/client";
 import React from "react";
 import MainPage from "./pages/MainPage";
-import SignupPage from "./pages/signupPage";
+import SignupPage from "./pages/SignupPage";
 import MembershipRequiredPage from "./pages/MembershipRequiredPage";
+import MyPage from "./pages/MyPage"
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     element: <App />, // Header/Footer 포함된 Layout
     children: [
       { path: "", element: <MainPage /> },
+      { path: "/mypage", element: <MyPage /> },
       { path: "/signup", element: <SignupPage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/membershipRequired", element: <MembershipRequiredPage /> },
