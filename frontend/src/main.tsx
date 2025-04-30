@@ -5,7 +5,7 @@ import App from "./App";
 import ReactDOM from "react-dom/client";
 import React from "react";
 import MainPage from "./pages/MainPage";
-import SignupPage from "./pages/signupPage";
+import SignupPage from "./pages/SignupPage";
 
 
 const router = createBrowserRouter([
