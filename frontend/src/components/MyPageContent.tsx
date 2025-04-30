@@ -21,7 +21,12 @@ const Section = ({ title, images }: { title: string; images: string[] }) => (
     <h2>{title}</h2>
     <div className={styles.imageGrid}>
       {images.map((img, idx) => (
-        <img key={idx} src={img} alt={`content-${idx}`} className={styles.image} />
+        <img
+          key={idx}
+          src={img}
+          alt={`content-${idx}`}
+          className={styles.image}
+        />
       ))}
     </div>
   </div>
