@@ -1,0 +1,48 @@
+.pageContainer {
+  background-color: #000;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.memberBox {
+  background-color: #1e1e1e;
+  color: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.notice {
+  margin-bottom: 2rem;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  margin-bottom: 2rem;
+}
+
+.payBtn {
+  width: 100%;
+  background-color: #e5c8a1;
+  color: #000;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 12px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.payBtn:hover {
+  background-color: #d8b98c;
+}

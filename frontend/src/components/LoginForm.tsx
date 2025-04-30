@@ -25,7 +25,13 @@ function LoginForm() {
 
   return (
     <div className={style.pageContainer}>
-      <form className={style.loginForm} onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+      <form
+        className={style.loginForm}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleLogin();
+        }}
+      >
         <h2 className={style.title}>로그인</h2>
         <input
           type="email"
@@ -41,7 +47,9 @@ function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           className={style.input}
         />
-        <button type="submit" className={style.submitBtn}>로그인</button>
+        <button type="submit" className={style.submitBtn}>
+          로그인
+        </button>
         {error && <p className={style.error}>{error}</p>}
       </form>
     </div>
