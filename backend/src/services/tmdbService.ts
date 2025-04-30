@@ -20,3 +20,22 @@ export const fetchMovies = async (page: number = 1) => {
     throw new Error("TMDB에서 영화 목록 가져오기 실패");
   }
 };
+
+// 장르별 영화 목록 받아오기
+export const fetchMoviesByGenre = async (genreId: string, page: number = 1) => {
+  try {
+    const response = await axios.get(`${TMDB_BASE_URL}/discover/movie`, {
+      params: {
+        with_genres: genreId, // 장르 ID
+        api_key: TMDB_API_KEY, // TMDB API 키
+        language: "ko-KR", // 한국어로 결과 반환
+        page: page, // 페이지 번호
+      },
+    });
+
+    return response.data.results; // 장르별 영화 목록 반환
+  } catch (error) {
+    console.error("TMDB에서 장르별 영화 목록 가져오기 실패:", error);
+    throw new Error("TMDB에서 장르별 영화 목록 가져오기 실패");
+  }
+};
