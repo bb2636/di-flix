@@ -8,11 +8,13 @@ export const getContentDetail = async (req: AuthRequest, res: Response) => {
   const movieId = parseInt(req.params.movie_id, 10);
 
   if (!user) {
-    return res.status(401).json({ message: "로그인이 필요합니다." });
+    res.status(401).json({ message: "로그인이 필요합니다." });
+    return;
   }
 
   if (!user.is_member) {
-    return res.status(403).json({ message: "멤버십 가입이 필요합니다." });
+    res.status(403).json({ message: "멤버십 가입이 필요합니다." });
+    return;
   }
 
   const content = await prisma.content.findUnique({
@@ -20,7 +22,8 @@ export const getContentDetail = async (req: AuthRequest, res: Response) => {
   });
 
   if (!content) {
-    return res.status(404).json({ message: "컨텐츠를 찾을 수 없습니다." });
+    res.status(404).json({ message: "컨텐츠를 찾을 수 없습니다." });
+    return;
   }
 
   res.status(200).json({ content });
