@@ -37,7 +37,16 @@ export const login = async (req: Request, res: Response) => {
 
   try {
     const token = await serviceLogin({ email, password });
-    res.status(200).json({ token });
+    //토큰 쿠키로 받기
+    res
+      .cookie("token", token.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 60 * 60 * 1000, // 1시간
+      })
+      .status(200)
+      .json({ message: "로그인 성공" });
   } catch (err) {
     const message = err instanceof Error ? err.message : "서버 오류";
     console.error(err);

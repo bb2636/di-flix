@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import paymentrouter from "./routes/paymentRouter";
 import authrouter from "./routes/auth.route";
@@ -13,13 +14,19 @@ const app = express();
 const PORT: number = Number(process.env.PORT) || 4000;
 
 // ✅ 미들웨어
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // 프론트 주소
+    credentials: true, // ⬅️ 쿠키 주고받기 허용
+  }),
+);
+app.use(cookieParser());
 app.use(express.json());
 
 // ✅ 라우터 등록
 app.use("/users", authrouter); // 회원가입, 로그인 관련
 app.use("/api", paymentrouter); // 결제 관련
-app.use("/content", contentRouter); // 컨텐츠 조회 관련
+app.use("/", contentRouter); // 컨텐츠 조회 관련
 app.use("/wishlist", wishlistRouter);
 
 // ✅ 서버 시작
