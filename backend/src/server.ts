@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import paymentrouter from "./routes/paymentRouter";
 import authrouter from "./routes/auth.route";
@@ -14,7 +15,13 @@ const app = express();
 const PORT: number = Number(process.env.PORT) || 4000;
 
 // ✅ 미들웨어
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // 프론트 주소
+    credentials: true, // ⬅️ 쿠키 주고받기 허용
+  }),
+);
+app.use(cookieParser());
 app.use(express.json());
 
 // ✅ 라우터 등록
