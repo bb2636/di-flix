@@ -1,6 +1,6 @@
 // src/components/MembershipGuide.tsx
-import React from 'react';
-import styles from '../styles/MembershipGuide.module.css';
+import React from "react";
+import styles from "../styles/MembershipGuide.module.css";
 
 const MembershipGuide = () => {
   return (

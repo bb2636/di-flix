@@ -1,10 +1,10 @@
 // src/pages/MainPage.tsx
-import React from 'react';
-import styles from '../styles/MainPage.module.css';
-import MainBanner from '../components/MainBanner';
-import ContentSection from '../components/ContentSection';
-import CategorySelector from '../components/CategorySelector';
-import MembershipGuide from '../components/MembershipGuide';
+import React from "react";
+import styles from "../styles/MainPage.module.css";
+import MainBanner from "../components/MainBanner";
+import ContentSection from "../components/ContentSection";
+import CategorySelector from "../components/CategorySelector";
+import MembershipGuide from "../components/MembershipGuide";
 
 const MainPage = () => {
   return (

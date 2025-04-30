@@ -45,7 +45,9 @@ function SignUpForm() {
             onChange={(e) => setEmail(e.target.value)}
             className={`${style.input} ${style.emailInput}`}
           />
-          <button type="button" className={style.duplicateBtn}>중복확인</button>
+          <button type="button" className={style.duplicateBtn}>
+            중복확인
+          </button>
         </div>
 
         <label className={style.label}>비밀번호</label>
@@ -75,7 +77,9 @@ function SignUpForm() {
           <label>이용약관에 동의합니다.</label>
         </div>
 
-        <button type="submit" className={style.submitBtn}>가입하기</button>
+        <button type="submit" className={style.submitBtn}>
+          가입하기
+        </button>
         {error && <p className={style.error}>{error}</p>}
       </form>
     </div>

@@ -1,4 +1,4 @@
-import api from "./axios"
+import api from "./axios";
 import { SignupRequest, LoginRequest } from "../types/user";
 
 //회원가입 api
