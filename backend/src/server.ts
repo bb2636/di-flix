@@ -26,7 +26,7 @@ app.use(express.json());
 // ✅ 라우터 등록
 app.use("/users", authrouter); // 회원가입, 로그인 관련
 app.use("/api", paymentrouter); // 결제 관련
-app.use("/", contentRouter); // 컨텐츠 조회 관련
+app.use("/content", contentRouter); // 컨텐츠 조회 관련
 app.use("/wishlist", wishlistRouter);
 
 // ✅ 서버 시작
