@@ -1,89 +1,52 @@
 import axios from "axios";
-import { Movie } from "../types/movie";
-import prisma from "../config/prisma";
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
-const BASE_URL = "https://api.themoviedb.org/3";
+const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 
-// tmdb 모든 영화 마지막페이지까지 db에 저장
-export const AllMoviesSave = async () => {
+// 영화 목록 받아오기
+export const fetchMovies = async (page: number = 1) => {
   try {
-    const firstPageResponse = await axios.get<{
-      results: Movie[];
-      total_pages: number;
-    }>(`${BASE_URL}/movie/popular`, {
+<<<<<<< HEAD
+    const response = await axios.get(`${TMDB_BASE_URL}/movie/popular`, {
       params: {
-        api_key: TMDB_API_KEY,
-        language: "ko-KR",
-        page: 1,
+        api_key: TMDB_API_KEY, // TMDB API 키
+        language: "ko-KR", // 한국어로 결과 반환
+        page: page, // 페이지 번호
+=======
+    const response = await axios.get(
+      `${TMDB_BASE_URL}/movie/popular`,
+      {
+        params: {
+          api_key: TMDB_API_KEY, // TMDB API 키
+          language: "ko-KR", // 한국어로 결과 반환
+          page: page, // 페이지 번호
+        },
+>>>>>>> f68fa99f9917d42198e7c2ab964e77a0fb7399eb
       },
     });
 
-    const totalPages = firstPageResponse.data.total_pages;
-    console.log(`전체 페이지 수: ${totalPages}`);
-
-    for (let page = 1; page <= 5 /*totalPages*/; page++) {
-      const response = await axios.get<{ results: Movie[] }>(
-        `${BASE_URL}/movie/popular`,
-        {
-          params: {
-            api_key: TMDB_API_KEY,
-            language: "ko-KR",
-            page: page,
-          },
-        },
-      );
-
-      const movies = response.data.results;
-
-      for (const movie of movies) {
-        const content = await prisma.content.create({
-          data: {
-            title: movie.title,
-            description: movie.overview,
-            views: 0,
-          },
-        });
-
-        for (const genreId of movie.genre_ids) {
-          await prisma.contentGenre.create({
-            data: {
-              movie_id: content.movie_id,
-              genre_ids: genreId,
-            },
-          });
-        }
-      }
-    }
-    console.log("전체 영화 저장 완료");
+    return response.data.results; // 영화 목록 반환
   } catch (error) {
-    console.error("영화 데이터 저장 실패:", error);
+    console.error("TMDB에서 영화 목록 가져오기 실패:", error);
+    throw new Error("TMDB에서 영화 목록 가져오기 실패");
   }
 };
 
-// 장르 가져와서 genres DB에 id와 name 저장
-export const saveGenres = async () => {
+// 장르별 영화 목록 받아오기
+export const fetchMoviesByGenre = async (genreId: string, page: number = 1) => {
   try {
-    const response = await axios.get(`${BASE_URL}/genre/movie/list`, {
+    const response = await axios.get(`${TMDB_BASE_URL}/discover/movie`, {
       params: {
-        api_key: TMDB_API_KEY,
-        language: "ko-KR",
+        with_genres: genreId, // 장르 ID
+        api_key: TMDB_API_KEY, // TMDB API 키
+        language: "ko-KR", // 한국어로 결과 반환
+        page: page, // 페이지 번호
       },
     });
 
-    const genres = response.data.genres;
-
-    for (const genre of genres) {
-      await prisma.genre.upsert({
-        where: { genre_ids: genre.id }, // 장르가 이미 있는지 확인
-        update: { genre_name: genre.name }, // 이미 있으면 이름 업데이트
-        create: { genre_ids: genre.id, genre_name: genre.name }, // 없으면 새로 생성
-      });
-    }
-
-    console.log("장르 저장 완료");
+    return response.data.results; // 장르별 영화 목록 반환
   } catch (error) {
-    console.error("장르 저장 실패:", error);
-    throw new Error("TMDB 장르 가져오기 실패");
+    console.error("TMDB에서 장르별 영화 목록 가져오기 실패:", error);
+    throw new Error("TMDB에서 장르별 영화 목록 가져오기 실패");
   }
 };
