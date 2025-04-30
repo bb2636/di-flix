@@ -5,6 +5,7 @@ import MainBanner from "../components/MainBanner";
 import ContentSection from "../components/ContentSection";
 import CategorySelector from "../components/CategorySelector";
 import MembershipGuide from "../components/MembershipGuide";
+import ToptenMovies from "../components/ToptenMovies";
 // import ToptenMovies from "../components/ToptenMovies";
 
 const MainPage = () => {
@@ -21,7 +22,8 @@ const MainPage = () => {
         />
         <button className={styles.searchButton}>검색</button>
       </div>
-      <ContentSection title="TOP 10 콘텐츠" />
+      <ToptenMovies />
+      {/* <ContentSection title="TOP 10 콘텐츠" /> */}
       <ContentSection title="새로 나온 콘텐츠" />
       <ContentSection title="요즘 뜨는 콘텐츠" />
 
