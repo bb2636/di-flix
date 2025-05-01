@@ -13,7 +13,9 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>NETFLEX</div>
+      <div className={styles.logo}>
+        <Link to="/" className={styles.logoLink}>NETFLEX</Link>
+      </div>
       <div className={styles.auth}>
         {isLoggedIn ? (
           <>
