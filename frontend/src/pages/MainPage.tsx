@@ -1,4 +1,3 @@
-// src/pages/MainPage.tsx
 import React from "react";
 import styles from "../styles/MainPage.module.css";
 import MainBanner from "../components/MainBanner";
@@ -14,19 +13,11 @@ const MainPage = () => {
       <CategorySelector />
       <MainBanner />
 
-      <div className={styles.searchBarSection}>
-        <input
-          type="text"
-          className={styles.searchInput}
-          placeholder="어떤 영상을 찾으시나요?"
-        />
-        <button className={styles.searchButton}>검색</button>
-      </div>
-      <ToptenMovies />
-      {/* <ContentSection title="TOP 10 콘텐츠" /> */}
-      <ContentSection title="새로 나온 콘텐츠" />
-      <ContentSection title="요즘 뜨는 콘텐츠" />
+      <hr className={styles.divider} />
 
+      <ToptenMovies />
+      <ContentSection title="현재 상영작" />
+      <ContentSection title="높은 평점" />
       <MembershipGuide />
     </div>
   );
