@@ -15,7 +15,14 @@
 .logo {
   font-size: 24px;
   font-weight: bold;
-  margin: 20px;
+  margin-left: 32px;
+  color: #A8A78A; /* 로고 컬러도 맞추기 */
+  letter-spacing: 2px;
+}
+
+.logoLink {
+  color: #A8A78A;
+  text-decoration: none;
 }
 
 .auth {
@@ -28,9 +35,12 @@
   border: none;
   padding: 0;
   margin: 0;
-  color: white;
+  color: #A8A78A; /* 연한 회색 톤으로 변경 */
+  text-transform: uppercase; /* 대문자화 */
+  letter-spacing: 1px;
   font: inherit;
   cursor: pointer;
+  text-decoration:none;
 }
 
 .authTextButton:hover {
