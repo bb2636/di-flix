@@ -12,11 +12,11 @@ const MainPage = () => {
     <div className={styles.pageWrapper}>
       <CategorySelector />
       <MainBanner />
-
       <hr className={styles.divider} />
-
       <ToptenMovies />
+      <hr className={styles.divider} />
       <NowShowingMovies />
+      <hr className={styles.divider} />
       <TopRatedMovies />
       <MembershipGuide />
     </div>

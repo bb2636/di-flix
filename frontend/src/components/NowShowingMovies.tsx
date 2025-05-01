@@ -29,7 +29,7 @@ const NowShowingMovies = () => {
 
   return (
     <section className={styles.sectionWrapper}>
-      <h3 className={styles.title}>현재 상영작</h3>
+      <h1 className={styles.title}>현재 상영작</h1>
       <div className={styles.thumbnailGrid}>
         {movies.map((movie) => (
           <div key={movie.id} className={styles.movieCard}>
