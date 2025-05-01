@@ -1,7 +1,6 @@
 // import { Response } from "express";
 import { AuthRequest } from "../middlewares/authrequest"; // 인증된 사용자 타입
 import prisma from "../config/prisma"; // Prisma 클라이언트
-import contentRouter from "../routes/contentRouter";
 import {
   fetchMovies,
   fetchTopMovies,
@@ -125,5 +124,3 @@ export const saveMovieToDB = async (req: Request, res: Response) => {
     res.status(500).json({ message: "영화 정보 저장 실패" });
   }
 };
-
-export default contentRouter;
