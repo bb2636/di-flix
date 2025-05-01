@@ -40,13 +40,14 @@ export const login = async (req: Request, res: Response) => {
     //토큰 쿠키로 받기
     res
       .cookie("token", token.token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        httpOnly: false,
+        secure: false, //process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge: 60 * 60 * 1000, // 1시간
       })
       .status(200)
       .json({ message: "로그인 성공" });
+    return;
   } catch (err) {
     const message = err instanceof Error ? err.message : "서버 오류";
     console.error(err);

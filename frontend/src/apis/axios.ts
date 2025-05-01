@@ -10,13 +10,13 @@ export default api;
 
 // 인기 영화 top 10
 export const fetchToptenMovies = async (): Promise<Movie[]> => {
-  const response = await axios.get("/content/top10");
+  const response = await api.get("/content/top10");
   return response.data;
 };
 
 // 검색창에 영화 검색
 export const searchFuncMovies = async (query: string) => {
-  const response = await axios.get(
+  const response = await api.get(
     `/content/search?query=${encodeURIComponent(query)}`,
   );
   return response.data;
@@ -24,24 +24,24 @@ export const searchFuncMovies = async (query: string) => {
 
 // 현재 상영중 영화
 export const getNowShowingMovies = async (page = 1): Promise<Movie[]> => {
-  const response = await axios.get(`/content/nowShowing?page=${page}`);
+  const response = await api.get(`/content/nowShowing?page=${page}`);
   return response.data;
 };
 
 // 높은 평점 영화
 export const getTopRatedMovies = async (page = 1): Promise<Movie[]> => {
-  const response = await axios.get(`/content/topRated?page=${page}`);
+  const response = await api.get(`/content/topRated?page=${page}`);
   return response.data;
 };
 
 // 메인페이지 장르 카테고리 생성
 export const fetchGenresCategory = async () => {
-  const response = await axios.get("/content/genre");
+  const response = await api.get("/content/genre");
   return response.data;
 };
 
 // 장르 목록 별로 페이지 생성
 export const fetchMoviesByGenre = async (genreId: number, page = 1) => {
-  const response = await axios.get(`/content/genre/${genreId}?page=${page}`);
+  const response = await api.get(`/content/genre/${genreId}?page=${page}`);
   return response.data;
 };

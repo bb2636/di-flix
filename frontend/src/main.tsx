@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/loginPage";
 import App from "./App";
 import ReactDOM from "react-dom/client";
-import React from "react";
 import MainPage from "./pages/MainPage";
 import SignupPage from "./pages/signupPage";
 import MembershipRequiredPage from "./pages/MembershipRequiredPage";
