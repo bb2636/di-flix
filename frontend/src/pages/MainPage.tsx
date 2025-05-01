@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "../styles/MainPage.module.css";
 import MainBanner from "../components/MainBanner";
-import ContentSection from "../components/ContentSection";
 import CategorySelector from "../components/CategorySelector";
 import MembershipGuide from "../components/MembershipGuide";
 import ToptenMovies from "../components/ToptenMovies";
-// import ToptenMovies from "../components/ToptenMovies";
+import NowShowingMovies from "../components/NowShowingMovies";
+import TopRatedMovies from "../components/TopRatedMovies";
 
 const MainPage = () => {
   return (
@@ -16,8 +16,8 @@ const MainPage = () => {
       <hr className={styles.divider} />
 
       <ToptenMovies />
-      <ContentSection title="현재 상영작" />
-      <ContentSection title="높은 평점" />
+      <NowShowingMovies />
+      <TopRatedMovies />
       <MembershipGuide />
     </div>
   );

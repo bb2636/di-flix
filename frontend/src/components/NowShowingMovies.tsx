@@ -1,0 +1,54 @@
+import React, { useEffect, useState } from "react";
+import { getNowShowingMovies } from "../apis/axios";
+import { Movie } from "../types/movie";
+import styles from "../styles/NowShowingMovies.module.css";
+
+const NowShowingMovies = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loadMovies = async () => {
+    try {
+      const data: Movie[] = await getNowShowingMovies(page);
+      if (data.length === 0) {
+        setHasMore(false);
+        return;
+      }
+      setMovies((prev) => [...prev, ...data]);
+      setPage((prev) => prev + 1);
+    } catch (error) {
+      console.error("추가 영화 로딩 실패", error);
+      setHasMore(false);
+    }
+  };
+
+  useEffect(() => {
+    loadMovies(); // 최초 한 번만 실행
+  }, []);
+
+  return (
+    <section className={styles.sectionWrapper}>
+      <h3 className={styles.title}>현재 상영작</h3>
+      <div className={styles.thumbnailGrid}>
+        {movies.map((movie) => (
+          <div key={movie.id} className={styles.movieCard}>
+            <img
+              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+              alt={movie.title}
+              className={styles.thumbnail}
+            />
+            <p className={styles.titleText}>{movie.title}</p>
+          </div>
+        ))}
+      </div>
+      {hasMore && (
+        <button className={styles.loadMoreButton} onClick={loadMovies}>
+          더 불러오기
+        </button>
+      )}
+    </section>
+  );
+};
+
+export default NowShowingMovies;

@@ -5,6 +5,8 @@ import {
   searchTopMovieTmDB,
   searchFuncMovies,
   searchGenreMovieTmDB,
+  getNowShowingMovies,
+  getTopRatedMovies,
 } from "../controllers/contentController";
 import { verifyToken } from "../middlewares/login-required";
 
@@ -24,5 +26,11 @@ contentRouter.get("/", verifyToken, getContentDetail);
 
 // 메인페이지 검색창 검색 조회
 contentRouter.get("/search", searchFuncMovies);
+
+// 현재 상영중 영화 조회
+contentRouter.get("/nowShowing", getNowShowingMovies);
+
+// 높은 평점 영화 조회
+contentRouter.get("/topRated", getTopRatedMovies);
 
 export default contentRouter;

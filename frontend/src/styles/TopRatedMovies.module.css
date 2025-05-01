@@ -1,0 +1,56 @@
+.sectionWrapper {
+  padding: 24px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: white;
+}
+
+.thumbnailGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.movieCard {
+  width: 150px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.movieCard:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.thumbnail {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.titleText {
+  margin-top: 8px;
+  font-size: 14px;
+  color: white;
+}
+
+.loadMoreButton {
+  margin: 24px auto 0;
+  padding: 10px 24px;
+  background-color: #00bcd4;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  transition: background-color 0.2s;
+}
+
+.loadMoreButton:hover {
+  background-color: #0097a7;
+}

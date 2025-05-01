@@ -1,11 +1,6 @@
 import React from "react";
 import styles from "../styles/ContentSection.module.css";
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string | null;
-}
+import { Movie } from "../types/movie";
 
 interface Props {
   title: string;
