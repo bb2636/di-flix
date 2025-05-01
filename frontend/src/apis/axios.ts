@@ -9,8 +9,14 @@ export default api;
 
 // 인기 영화 top 10
 export const fetchToptenMovies = async () => {
-  const response = await axios.get("http://localhost:4000/content/top10");
+  const response = await axios.get("/content/top10");
   return response.data;
 };
 
 // 검색창에 영화 검색
+export const searchFuncMovies = async (query: string) => {
+  const response = await axios.get(
+    `/content/search?query=${encodeURIComponent(query)}`,
+  );
+  return response.data;
+};

@@ -4,10 +4,11 @@ import App from "./App";
 import ReactDOM from "react-dom/client";
 import React from "react";
 import MainPage from "./pages/MainPage";
-import SignupPage from "./pages/SignupPage";
+import SignupPage from "./pages/signupPage";
 import MembershipRequiredPage from "./pages/MembershipRequiredPage";
 import MyPage from "./pages/MyPage";
 import CategoryPage from "./pages/categoryPage";
+import SearchResultPage from "./pages/searchResultPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "/login", element: <LoginPage /> },
       { path: "/membershipRequired", element: <MembershipRequiredPage /> },
       { path: "/category/", element: <CategoryPage /> },
+      { path: "/search", element: <SearchResultPage /> },
     ],
   },
 ]);

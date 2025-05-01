@@ -41,3 +41,11 @@
 .searchButton:hover {
   background-color: #e6c7cf;
 }
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin: 40px 2.5%;
+  width: 95%;
+}
