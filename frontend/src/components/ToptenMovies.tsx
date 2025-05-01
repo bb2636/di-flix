@@ -2,12 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fetchToptenMovies } from "../apis/axios";
 import styles from "../styles/ToptenMovies.module.css";
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-}
+import { Movie } from "../types/movie";
 
 const ToptenMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);

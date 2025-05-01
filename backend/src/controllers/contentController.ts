@@ -6,6 +6,8 @@ import {
   fetchTopMovies,
   fetchMoviesByGenre,
   fetchFuncMovies,
+  fetchNowShowingMovies,
+  fetchTopRatedMovies,
 } from "../services/tmdbService"; // TMDB 서비스 불러오기
 import { Request, Response } from "express";
 
@@ -132,7 +134,27 @@ export const searchFuncMovies = async (req: Request, res: Response) => {
   }
 };
 
-// 영화 저장 함수
+export const getNowShowingMovies = async (req: Request, res: Response) => {
+  const page = parseInt(req.query.page as string, 10) || 1;
+  try {
+    const movies = await fetchNowShowingMovies(page);
+    res.status(200).json(movies);
+  } catch {
+    res.status(500).json({ message: "현재 상영 중 영화 가져오기 실패" });
+  }
+};
+
+export const getTopRatedMovies = async (req: Request, res: Response) => {
+  const page = parseInt(req.query.page as string, 10) || 1;
+  try {
+    const movies = await fetchTopRatedMovies(page);
+    res.status(200).json(movies);
+  } catch {
+    res.status(500).json({ message: "높은 평점 영화 가져오기 실패" });
+  }
+};
+
+// 영화 저장 함수 - 추후 처리예정
 export const saveMovieToDB = async (req: Request, res: Response) => {
   const { movie_id, title, description } = req.body;
 

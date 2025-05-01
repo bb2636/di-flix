@@ -8,7 +8,7 @@ import SignupPage from "./pages/signupPage";
 import MembershipRequiredPage from "./pages/MembershipRequiredPage";
 import MyPage from "./pages/MyPage";
 import CategoryPage from "./pages/categoryPage";
-import SearchResultPage from "./pages/searchResultPage";
+import SearchResultPage from "./pages/SearchResultPage";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +27,5 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
+  <RouterProvider router={router} />,
 );

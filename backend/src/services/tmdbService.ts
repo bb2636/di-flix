@@ -66,3 +66,20 @@ export const fetchFuncMovies = async (query: string) => {
   );
   return response.data.results;
 };
+
+// 현재 상영 중 영화 검색
+export const fetchNowShowingMovies = async (page = 1) => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB_API_KEY}&language=ko-KR&page=${page}&region=KR`,
+  );
+
+  return response.data.results;
+};
+
+// 높은 평점 영화 검색
+export const fetchTopRatedMovies = async (page = 1) => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_API_KEY}&language=ko-KR&page=${page}&region=KR`,
+  );
+  return response.data.results;
+};
