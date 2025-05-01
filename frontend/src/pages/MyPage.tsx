@@ -4,6 +4,7 @@ import styles from "../styles/mypage.module.css";
 import dummyProfile from "../assets/poster.jpeg";
 import { WishlistItem } from "../types/wishlist";
 import { useNavigate } from "react-router-dom";
+import { getUserFromToken } from "../utils/getUserFromToken";
 
 function MypagePage() {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
@@ -16,14 +17,12 @@ function MypagePage() {
         const res = await getWishlist();
         setWishlist(res.data.wishlist);
 
-        const token = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("token="));
-        if (token) {
-          const payload = JSON.parse(atob(token.split(".")[1])); // base64 decode
-          setUserEmail(payload.email);
-        }
-      } catch (err) {
+        const user = getUserFromToken(); // 유틸 사용
+        console.log("사용자 정보 : ",user);
+        if (user) {
+          setUserEmail(user.email);
+          }
+        } catch (err) {
         console.error("위시리스트 로딩 실패", err);
       }
     };
@@ -48,7 +47,7 @@ function MypagePage() {
     <div className={styles.mypageContainer}>
       <div className={styles.profileSection}>
         <img src={dummyProfile} alt="profile" className={styles.profileImage} />
-        <p>{userEmail}</p>
+        <p>{userEmail.split("@")[0]} 님</p>
       </div>
 
       <div className={styles.wishlistSection}>

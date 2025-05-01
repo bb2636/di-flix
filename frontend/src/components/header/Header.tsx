@@ -7,12 +7,29 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation(); //현재 위치 감지
 
   useEffect(() => {
-    const hasToken = document.cookie.includes("token=");
-    setIsLoggedIn(hasToken);
-  }, []);
+    try {
+      const raw = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="));
+  
+      if (raw) {
+        const token = decodeURIComponent(raw.split("=")[1]);
+        const payloadBase64 = token.split(".")[1];
+        const payload = JSON.parse(atob(payloadBase64));
+        console.log("payload", payload);
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (err) {
+      console.error("로그인 여부 확인 실패", err);
+      setIsLoggedIn(false);
+    }
+  }, [location]);
+   // 라우트 이동 시마다 검사
 
   const handleSearch = () => {
     if (query.trim()) {
