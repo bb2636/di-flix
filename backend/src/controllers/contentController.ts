@@ -6,6 +6,7 @@ import {
   fetchMovies,
   fetchTopMovies,
   fetchMoviesByGenre,
+  fetchFuncMovies,
 } from "../services/tmdbService"; // TMDB 서비스 불러오기
 import { Request, Response } from "express";
 
@@ -98,6 +99,37 @@ export const searchGenreMovieTmDB = async (req: Request, res: Response) => {
     console.error("TMDB API에서 영화 목록 가져오기 실패:", error);
     res.status(500).json({ message: "서버 오류" });
     return;
+  }
+};
+
+//// fetchFucnMovies 메인페이지 검색창 검색 기능 가져와 클라이언트에 반환
+export const searchFuncMovies = async (req: Request, res: Response) => {
+  const query = req.query.query as string;
+
+  if (!query) {
+    res.status(400).json({ message: "검색어가 필요합니다." });
+    return;
+  }
+
+  try {
+    const results = await fetchFuncMovies(query);
+
+    // 정확히 일치하는 영화 → 맨 앞으로 정렬
+    const sorted = results.sort((a: any, b: any) => {
+      const titleA = a.title?.trim().toLowerCase();
+      const titleB = b.title?.trim().toLowerCase();
+      const queryLower = query.trim().toLowerCase();
+
+      const aExact = titleA === queryLower ? 0 : 1;
+      const bExact = titleB === queryLower ? 0 : 1;
+
+      return aExact - bExact;
+    });
+
+    res.status(200).json(sorted);
+  } catch (error) {
+    console.error("TMDB 검색 오류:", error);
+    res.status(500).json({ message: "TMDB 검색 실패" });
   }
 };
 

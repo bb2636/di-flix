@@ -58,3 +58,11 @@ export const fetchMoviesByGenre = async (genreId: string, page: number = 1) => {
     throw new Error("TMDB에서 장르별 영화 목록 가져오기 실패");
   }
 };
+
+// 메인페이지 검색창 검색 기능
+export const fetchFuncMovies = async (query: string) => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&language=ko-KR`,
+  );
+  return response.data.results;
+};

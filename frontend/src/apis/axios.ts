@@ -12,3 +12,5 @@ export const fetchToptenMovies = async () => {
   const response = await axios.get("http://localhost:4000/content/top10");
   return response.data;
 };
+
+// 검색창에 영화 검색
