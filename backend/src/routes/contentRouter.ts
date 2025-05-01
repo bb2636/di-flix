@@ -3,6 +3,7 @@ import {
   getContentDetail,
   searchMovieTmDB,
   searchTopMovieTmDB,
+  searchFuncMovies,
   searchGenreMovieTmDB,
 } from "../controllers/contentController";
 import { verifyToken } from "../middlewares/login-required";
@@ -20,5 +21,8 @@ contentRouter.get("/genre/:genre_id", searchGenreMovieTmDB);
 
 // 상세 조회 (멤버만 가능)
 contentRouter.get("/", verifyToken, getContentDetail);
+
+// 메인페이지 검색창 검색 조회
+contentRouter.get("/search", searchFuncMovies);
 
 export default contentRouter;
