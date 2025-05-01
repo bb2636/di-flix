@@ -8,7 +8,7 @@ import SignupPage from "./pages/signupPage";
 import MembershipRequiredPage from "./pages/MembershipRequiredPage";
 import MyPage from "./pages/MyPage";
 import CategoryPage from "./pages/categoryPage";
-import SearchResultPage from "./pages/searchResultPage";
+import SearchResultPage from "./pages/SearchResultPage";
 
 const router = createBrowserRouter([
   {
