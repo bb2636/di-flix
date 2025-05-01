@@ -1,15 +1,16 @@
-.sectionWrapper {
+.pageWrapper {
   padding: 24px;
 }
 
 .title {
   font-size: 30px;
   font-weight: bold;
-  margin-bottom: 30px;
-  color: whitesmoke;
+  color: white;
+  margin-left: 30px;
+  margin-bottom: 10px;
 }
 
-.thumbnailGrid {
+.movieGrid {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -23,21 +24,27 @@
 
 .movieCard:hover {
   transform: scale(1.05);
-  z-index: 10;
 }
 
-.thumbnail {
+.poster {
   width: 100%;
   border-radius: 8px;
   object-fit: cover;
 }
 
-.titleText {
+.movieTitle {
   margin-top: 8px;
-  font-size: 14px;
   color: white;
+  font-size: 14px;
 }
 
+.divider {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 2.5%;
+  width: 95%;
+}
 .loadMoreButton {
   display: block;
   margin: 20px auto;

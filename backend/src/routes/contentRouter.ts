@@ -7,6 +7,7 @@ import {
   searchGenreMovieTmDB,
   getNowShowingMovies,
   getTopRatedMovies,
+  getGenresCategory,
 } from "../controllers/contentController";
 import { verifyToken } from "../middlewares/login-required";
 
@@ -17,6 +18,9 @@ contentRouter.get("/", searchMovieTmDB);
 
 // 탑 10 영화 목록 조회
 contentRouter.get("/top10", searchTopMovieTmDB);
+
+// 영화 카테고리 조회
+contentRouter.get("/genre/", getGenresCategory);
 
 // 장르별 영화 목록 조회
 contentRouter.get("/genre/:genre_id", searchGenreMovieTmDB);

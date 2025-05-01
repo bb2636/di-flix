@@ -33,3 +33,15 @@ export const getTopRatedMovies = async (page = 1): Promise<Movie[]> => {
   const response = await axios.get(`/content/topRated?page=${page}`);
   return response.data;
 };
+
+// 메인페이지 장르 카테고리 생성
+export const fetchGenresCategory = async () => {
+  const response = await axios.get("/content/genre");
+  return response.data;
+};
+
+// 장르 목록 별로 페이지 생성
+export const fetchMoviesByGenre = async (genreId: number, page = 1) => {
+  const response = await axios.get(`/content/genre/${genreId}?page=${page}`);
+  return response.data;
+};

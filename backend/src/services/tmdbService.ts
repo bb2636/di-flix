@@ -40,6 +40,19 @@ export const fetchTopMovies = async (page: number = 1) => {
   }
 };
 
+export const fetchGenresCategory = async () => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/genre/movie/list`,
+    {
+      params: {
+        api_key: TMDB_API_KEY,
+        language: "ko-KR",
+      },
+    },
+  );
+  return response.data.genres;
+};
+
 // 장르별 영화 목록 받아오기
 export const fetchMoviesByGenre = async (genreId: string, page: number = 1) => {
   try {
@@ -52,7 +65,10 @@ export const fetchMoviesByGenre = async (genreId: string, page: number = 1) => {
       },
     });
 
-    return response.data.results; // 장르별 영화 목록 반환
+    return {
+      movies: response.data.results, // 장르별 영화 목록 반환
+      totalPages: response.data.total_pages,
+    };
   } catch (error) {
     console.error("TMDB에서 장르별 영화 목록 가져오기 실패:", error);
     throw new Error("TMDB에서 장르별 영화 목록 가져오기 실패");

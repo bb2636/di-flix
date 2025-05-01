@@ -8,6 +8,7 @@ import {
   fetchFuncMovies,
   fetchNowShowingMovies,
   fetchTopRatedMovies,
+  fetchGenresCategory,
 } from "../services/tmdbService"; // TMDB 서비스 불러오기
 import { Request, Response } from "express";
 
@@ -75,9 +76,22 @@ export const searchTopMovieTmDB = async (req: Request, res: Response) => {
     res.status(500).json({ message: "탑 10 영화 가져오기 실패" });
   }
 };
+
+// 영화 장르 카테고리 조회
+export const getGenresCategory = async (req: Request, res: Response) => {
+  try {
+    const genres = await fetchGenresCategory();
+    res.status(200).json(genres);
+  } catch (error) {
+    console.error("장르 목록 조회 실패:", error);
+    res.status(500).json({ message: "장르 목록을 가져오는 데 실패했습니다." });
+  }
+};
+
 // 장르별 영화 목록 조회
 export const searchGenreMovieTmDB = async (req: Request, res: Response) => {
-  const genreId = req.params.genre_id; // URL에서 장르 ID 가져오기
+  const genreId = req.params.genre_id;
+  const page = parseInt(req.query.page as string, 10) || 1;
 
   if (!genreId) {
     res.status(400).json({ message: "장르 ID가 필요합니다." });
@@ -85,16 +99,14 @@ export const searchGenreMovieTmDB = async (req: Request, res: Response) => {
   }
 
   try {
-    // tmdbService에서 장르별 영화 목록을 받아오기
-    const tmdbMovies = await fetchMoviesByGenre(genreId); // 서비스에서 처리된 결과 반환
+    const { movies, totalPages } = await fetchMoviesByGenre(genreId, page);
 
-    if (tmdbMovies.length === 0) {
+    if (movies.length === 0) {
       res.status(404).json({ message: "해당 장르에 대한 영화가 없습니다." });
       return;
     }
 
-    // TMDB API에서 가져온 영화 목록을 클라이언트에 반환
-    res.status(200).json(tmdbMovies);
+    res.status(200).json({ movies, totalPages });
     return;
   } catch (error) {
     console.error("TMDB API에서 영화 목록 가져오기 실패:", error);
@@ -134,6 +146,7 @@ export const searchFuncMovies = async (req: Request, res: Response) => {
   }
 };
 
+//현재 상영중 영화
 export const getNowShowingMovies = async (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string, 10) || 1;
   try {
@@ -144,6 +157,7 @@ export const getNowShowingMovies = async (req: Request, res: Response) => {
   }
 };
 
+//높은 평점 영화
 export const getTopRatedMovies = async (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string, 10) || 1;
   try {

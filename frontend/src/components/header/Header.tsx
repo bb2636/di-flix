@@ -34,7 +34,7 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link to="/" className={styles.logoLink}>
-          DIFLEX
+          DIFLIX
         </Link>
       </div>
 

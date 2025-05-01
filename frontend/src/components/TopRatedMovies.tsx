@@ -28,7 +28,7 @@ const TopRatedMovies = () => {
 
   return (
     <section className={styles.sectionWrapper}>
-      <h3 className={styles.title}>높은 평점 영화</h3>
+      <h1 className={styles.title}>높은 평점 영화</h1>
       <div className={styles.thumbnailGrid}>
         {movies.map((movie) => (
           <div key={movie.id} className={styles.movieCard}>

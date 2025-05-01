@@ -7,7 +7,7 @@ import MainPage from "./pages/MainPage";
 import SignupPage from "./pages/signupPage";
 import MembershipRequiredPage from "./pages/MembershipRequiredPage";
 import MyPage from "./pages/MyPage";
-import CategoryPage from "./pages/categoryPage";
+import GenreMoviePage from "./pages/GenreMoviePage";
 import SearchResultPage from "./pages/SearchResultPage";
 
 const router = createBrowserRouter([
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { path: "/signup", element: <SignupPage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/membershipRequired", element: <MembershipRequiredPage /> },
-      { path: "/category/", element: <CategoryPage /> },
+      { path: "/genre/:genreId", element: <GenreMoviePage /> },
       { path: "/search", element: <SearchResultPage /> },
     ],
   },

@@ -1,13 +1,12 @@
-/* src/components/CategorySelector.module.css */
-
 .categorySection {
+  margin-top: 100px;
   padding: 40px 24px;
   background-color: #ffffff;
   text-align: center;
   width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
-  padding: 40px 24px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .title {
@@ -37,4 +36,12 @@
 
 .categoryBtn:hover {
   background-color: #ddd;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin: 40px 2.5%;
+  width: 95%;
 }

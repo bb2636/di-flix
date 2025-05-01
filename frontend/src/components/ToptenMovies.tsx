@@ -33,7 +33,7 @@ const ToptenMovies = () => {
 
   return (
     <section className={styles.sectionWrapper}>
-      <h3 className={styles.title}>🔥 TOP 10</h3>
+      <h1 className={styles.title}>🔥 TOP 10</h1>
 
       <div className={styles.carousel}>
         <button

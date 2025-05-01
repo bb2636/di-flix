@@ -49,3 +49,7 @@
   margin: 40px 2.5%;
   width: 95%;
 }
+
+.pageWrapper {
+  padding-top: 64px;
+}
