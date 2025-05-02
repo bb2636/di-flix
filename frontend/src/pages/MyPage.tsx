@@ -42,9 +42,10 @@ function MypagePage() {
     if (window.confirm("정말로 탈퇴하시겠습니까?")) {
       try {
         await withdrawUser();
-        alert("회원 탈퇴가 완료되었습니다.");
-        navigate("/login");
-      } catch {
+        alert("회원 탈퇴가 완료되었습니다. 홈으로 이동합니다.");
+        navigate("/"); //메인페이지 이동
+      } catch (err) {
+        console.error("회원 탈퇴 실패", err);
         alert("탈퇴 실패");
       }
     }
@@ -54,7 +55,6 @@ function MypagePage() {
     <div className={styles.mypageContainer}>
       <div className={styles.profileSection}>
         <img
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
           src={profileImages[selectProfile]}
           alt="profile"
           className={styles.profileImage}

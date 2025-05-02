@@ -5,6 +5,7 @@ import {
   login as serviceLogin,
   withdrawUser,
 } from "../services/auth.service";
+import prisma from "../config/prisma";
 
 // 회원가입
 export const register = async (req: Request, res: Response) => {
@@ -78,7 +79,7 @@ export const logout = (req: Request, res: Response) => {
 
 //회원탈퇴
 export const withdraw = async (req: AuthRequest, res: Response) => {
-  const userId = (req as any).user?.user_id;
+  const userId = req.user?.user_id;
 
   if (!userId) {
     res.status(401).json({ message: "인증이 필요합니다." });
@@ -86,17 +87,11 @@ export const withdraw = async (req: AuthRequest, res: Response) => {
   }
 
   try {
-    await withdrawUser(userId);
-    res.status(200).json({ message: "회원 탈퇴가 완료되었습니다." });
+    await withdrawUser(userId); // ✅ 서비스 함수 호출
+    res.clearCookie("token"); // ✅ 쿠키 삭제
+    res.status(200).json({ message: "탈퇴 성공" });
   } catch (err) {
-    const message =
-      err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.";
-    console.error(err);
-
-    if (message === "유저를 찾을 수 없습니다.") {
-      res.status(404).json({ message });
-    } else {
-      res.status(500).json({ message: "서버 오류" });
-    }
+    console.error("회원탈퇴 실패", err);
+    res.status(404).json({ message: "유저를 찾을 수 없습니다." });
   }
 };

@@ -111,7 +111,7 @@ export const login = async (input: Login) => {
 export const withdrawUser = async (userId: number) => {
   const result = await prisma.user.updateMany({
     where: { user_id: userId },
-    data: { is_deleted: true },
+    data: { is_deleted: false },
   });
 
   if (result.count === 0) {
