@@ -74,7 +74,10 @@ const MainBanner = () => {
       <button className={`${styles.navButton} ${styles.left}`} onClick={goPrev}>
         ◀
       </button>
-      <button className={`${styles.navButton} ${styles.right}`} onClick={goNext}>
+      <button
+        className={`${styles.navButton} ${styles.right}`}
+        onClick={goNext}
+      >
         ▶
       </button>
     </section>

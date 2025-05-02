@@ -4,6 +4,7 @@ import { fetchMoviesByGenre } from "../apis/axios";
 import { Movie } from "../types/movie";
 import { genreMap } from "../types/genre";
 import styles from "../styles/GenreMoviePage.module.css";
+import { Link } from "react-router-dom";
 
 const GenreMoviePage = () => {
   const { genreId } = useParams<{ genreId: string }>();
@@ -51,12 +52,14 @@ const GenreMoviePage = () => {
       <div className={styles.movieGrid}>
         {movies.map((movie) => (
           <div key={movie.id} className={styles.movieCard}>
-            <img
-              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-              alt={movie.title}
-              className={styles.poster}
-            />
-            <p className={styles.movieTitle}>{movie.title}</p>
+            <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
+              <img
+                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                alt={movie.title}
+                className={styles.poster}
+              />
+              <p className={styles.movieTitle}>{movie.title}</p>
+            </Link>
           </div>
         ))}
       </div>

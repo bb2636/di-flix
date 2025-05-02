@@ -87,10 +87,8 @@ function MypagePage() {
           </div>
         )}
         <div className={styles.greetingWrapper}>
-        <h2 className={styles.greeting}>
-          {user?.email.split("@")[0]} 님,
-        </h2>
-        <p className={styles.subGreeting}>즐거운 시간되세요.</p>
+          <h2 className={styles.greeting}>{user?.email.split("@")[0]} 님,</h2>
+          <p className={styles.subGreeting}>즐거운 시간되세요.</p>
         </div>
       </div>
 
