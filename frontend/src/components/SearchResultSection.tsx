@@ -17,17 +17,18 @@ const SearchResultSection: React.FC<Props> = ({ title, movies }) => {
         {movies.map((movie) => (
           <div key={movie.id} className={styles.movieCard}>
             <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
-            <img
-              key={movie.id}
-              src={
-                movie.poster_path
-                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                  : "/assets/default_poster.jpg"
-              }
-              className={styles.thumbnail}
-              alt={movie.title}
-            />
-            <p className={styles.titleText}>{movie.title}</p></Link>
+              <img
+                key={movie.id}
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    : "/assets/default_poster.jpg"
+                }
+                className={styles.thumbnail}
+                alt={movie.title}
+              />
+              <p className={styles.titleText}>{movie.title}</p>
+            </Link>
           </div>
         ))}
       </div>

@@ -110,6 +110,6 @@
   z-index: 1000;
   font-weight: bold;
 }
-.withdrawButton:hover{
+.withdrawButton:hover {
   text-decoration: underline;
 }

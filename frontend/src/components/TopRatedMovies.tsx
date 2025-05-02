@@ -34,12 +34,13 @@ const TopRatedMovies = () => {
         {movies.map((movie) => (
           <div key={movie.id} className={styles.movieCard}>
             <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
-            <img
-              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-              alt={movie.title}
-              className={styles.thumbnail}
-            />
-            <p className={styles.titleText}>{movie.title}</p></Link>
+              <img
+                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                alt={movie.title}
+                className={styles.thumbnail}
+              />
+              <p className={styles.titleText}>{movie.title}</p>
+            </Link>
           </div>
         ))}
       </div>

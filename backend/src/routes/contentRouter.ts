@@ -26,7 +26,7 @@ contentRouter.get("/genre/", getGenresCategory);
 contentRouter.get("/genre/:genre_id", searchGenreMovieTmDB);
 
 // 상세 조회 (멤버만 가능)
-contentRouter.get("/", verifyToken, getContentDetail);
+contentRouter.get("/:id", searchMovieTmDB);
 
 // 메인페이지 검색창 검색 조회
 contentRouter.get("/search", searchFuncMovies);
