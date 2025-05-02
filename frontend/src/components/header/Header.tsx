@@ -14,7 +14,7 @@ const Header = () => {
       const raw = document.cookie
         .split("; ")
         .find((row) => row.startsWith("token="));
-  
+
       if (raw) {
         const token = decodeURIComponent(raw.split("=")[1]);
         const payloadBase64 = token.split(".")[1];
@@ -29,7 +29,7 @@ const Header = () => {
       setIsLoggedIn(false);
     }
   }, [location]);
-   // 라우트 이동 시마다 검사
+  // 라우트 이동 시마다 검사
 
   const handleSearch = () => {
     if (query.trim()) {

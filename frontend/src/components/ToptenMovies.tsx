@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { fetchToptenMovies } from "../apis/axios";
 import styles from "../styles/ToptenMovies.module.css";
 import { Movie } from "../types/movie";
+import { Link } from "react-router-dom";
 
 const ToptenMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -46,14 +47,16 @@ const ToptenMovies = () => {
         <div className={styles.thumbnailGrid} ref={scrollRef}>
           {movies.map((movie, idx) => (
             <div key={movie.id} className={styles.movieCard}>
-              <img
-                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                alt={movie.title}
-                className={styles.thumbnail}
-              />
-              <p className={styles.titleText}>
-                {idx + 1}. {movie.title}
-              </p>
+              <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                  alt={movie.title}
+                  className={styles.thumbnail}
+                />
+                <p className={styles.titleText}>
+                  {idx + 1}. {movie.title}
+                </p>
+              </Link>
             </div>
           ))}
         </div>
