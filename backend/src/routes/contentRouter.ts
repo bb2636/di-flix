@@ -13,6 +13,12 @@ import { verifyToken } from "../middlewares/login-required";
 
 const contentRouter = Router();
 
+// 로깅 미들웨어 추가
+contentRouter.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
 // 영화 목록 조회 (날짜 기준 ASC, DESC 정렬 가능)
 contentRouter.get("/", searchMovieTmDB);
 
@@ -21,6 +27,7 @@ contentRouter.get("/top10", searchTopMovieTmDB);
 
 // 영화 카테고리 조회
 contentRouter.get("/genre/", getGenresCategory);
+
 // 상세 조회 (멤버만 가능)
 contentRouter.get("/detail/:movie_id", verifyToken, getContentDetail);
 

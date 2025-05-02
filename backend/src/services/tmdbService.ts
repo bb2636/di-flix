@@ -67,7 +67,10 @@ export const fetchMoviesByGenre = async (genreId: string, page: number = 1) => {
         page: page, // 페이지 번호
       },
     });
-    return response.data.results;
+    return {
+      movies: response.data.results,
+      totalPages: response.data.total_pages,
+    };
   } catch (error) {
     console.error("TMDB에서 장르별 영화 목록 가져오기 실패:", error);
     throw new Error("TMDB에서 장르별 영화 목록 가져오기 실패");
@@ -116,7 +119,7 @@ export const fetchMovieDetailWithTrailer = async (movieId: number) => {
     {
       params: {
         api_key: TMDB_API_KEY,
-        language: "ko-KR",
+        language: "en-UK",
       },
     },
   );
