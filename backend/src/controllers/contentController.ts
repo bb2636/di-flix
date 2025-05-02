@@ -42,6 +42,7 @@ import { Request, Response } from "express";
 export const getContentDetail = async (req: AuthRequest, res: Response) => {
   const user = req.user;
   const movieId = parseInt(req.params.movie_id, 10);
+  console.log("movieId:", movieId);
 
   // 🔒 로그인 체크
   if (!user) {
@@ -50,10 +51,10 @@ export const getContentDetail = async (req: AuthRequest, res: Response) => {
   }
 
   // 💳 멤버십 체크
-  if (!user.is_member) {
-    res.status(403).json({ message: "멤버십 가입이 필요합니다." });
-    return;
-  }
+  // if (!user.is_member) {
+  //   res.status(403).json({ message: "멤버십 가입이 필요합니다." });
+  //   return;
+  // }
 
   try {
     const content = await fetchMovieDetailWithTrailer(movieId);
