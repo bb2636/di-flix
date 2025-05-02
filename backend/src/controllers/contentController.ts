@@ -128,7 +128,7 @@ export const searchGenreMovieTmDB = async (req: Request, res: Response) => {
 
   try {
     const { movies, totalPages } = await fetchMoviesByGenre(genreId, page);
-
+    console.log("movies:", movies);
     if (movies.length === 0) {
       res.status(404).json({ message: "해당 장르에 대한 영화가 없습니다." });
       return;

@@ -16,7 +16,7 @@ const PORT: number = Number(process.env.PORT) || 4000;
 // ✅ 미들웨어
 app.use(
   cors({
-    origin: "http://localhost:5173", // 프론트 주소
+    origin: true, // 모든 origin 허용
     credentials: true, // ⬅️ 쿠키 주고받기 허용
   }),
 );
