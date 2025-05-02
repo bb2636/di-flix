@@ -13,7 +13,8 @@ const DetailMoviePage = () => {
   useEffect(() => {
     const fetchDetailMovie = async () => {
       try {
-        const response = await api.get(`/content/${id}`);
+        console.log("id:", id);
+        const response = await api.get(`/content/detail/${id}`);
         setMovie(response.data);
       } catch (error) {
         console.error("영화 상세 정보 불러오기 실패:", error);
