@@ -17,8 +17,7 @@ export const fetchMovies = async (page: number = 1) => {
       },
     });
 
-    const movies = response.data.results;
-    return await appendTrailerToMovies(movies);
+    return response.data.results;
   } catch (error) {
     console.error("TMDB에서 영화 목록 가져오기 실패:", error);
     throw new Error("TMDB에서 영화 목록 가져오기 실패");
@@ -37,8 +36,7 @@ export const fetchTopMovies = async (page: number = 1) => {
       },
     });
 
-    const movies = response.data.results;
-    return await appendTrailerToMovies(movies);
+    return response.data.results;
   } catch (error) {
     console.error("TMDB에서 TOP 10 영화 목록 가져오기 실패:", error);
     throw new Error("TMDB에서 TOP 10 영화 목록 가져오기 실패");
@@ -69,12 +67,7 @@ export const fetchMoviesByGenre = async (genreId: string, page: number = 1) => {
         page: page, // 페이지 번호
       },
     });
-    const movies = response.data.results;
-    const enriched = await appendTrailerToMovies(movies);
-    return {
-      movies: enriched,
-      totalPages: response.data.total_pages,
-    };
+    return response.data.results;
   } catch (error) {
     console.error("TMDB에서 장르별 영화 목록 가져오기 실패:", error);
     throw new Error("TMDB에서 장르별 영화 목록 가져오기 실패");
@@ -86,8 +79,7 @@ export const fetchFuncMovies = async (query: string) => {
   const response = await axios.get(
     `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&language=ko-KR`,
   );
-  const movies = response.data.results;
-  return await appendTrailerToMovies(movies);
+  return response.data.results;
 };
 
 // 현재 상영 중 영화 검색
@@ -96,8 +88,7 @@ export const fetchNowShowingMovies = async (page = 1) => {
     `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB_API_KEY}&language=ko-KR&page=${page}&region=KR`,
   );
 
-  const movies = response.data.results;
-  return await appendTrailerToMovies(movies);
+  return response.data.results;
 };
 
 // 높은 평점 영화 검색
@@ -105,25 +96,37 @@ export const fetchTopRatedMovies = async (page = 1) => {
   const response = await axios.get(
     `https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_API_KEY}&language=ko-KR&page=${page}&region=KR`,
   );
-  const movies = response.data.results;
-  return await appendTrailerToMovies(movies);
+  return response.data.results;
 };
 
 // 해당 영화 json 검색 + youtube링크 검색
-const appendTrailerToMovies = async (movies: TmdbMovie[]) => {
-  return await Promise.all(
-    movies.map(async (movie) => {
-      const res = await axios.get(
-        `https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${TMDB_API_KEY}`,
-      );
-      const trailer = res.data.results.find(
-        (v: Video) => v.site === "YouTube" && v.type === "Trailer",
-      );
-
-      return {
-        ...movie,
-        trailerKey: trailer?.key || null,
-      };
-    }),
+export const fetchMovieDetailWithTrailer = async (movieId: number) => {
+  const movieRes = await axios.get(
+    `https://api.themoviedb.org/3/movie/${movieId}`,
+    {
+      params: {
+        api_key: TMDB_API_KEY,
+        language: "ko-KR",
+      },
+    },
   );
+
+  const videoRes = await axios.get(
+    `https://api.themoviedb.org/3/movie/${movieId}/videos`,
+    {
+      params: {
+        api_key: TMDB_API_KEY,
+        language: "ko-KR",
+      },
+    },
+  );
+
+  const trailer = videoRes.data.results.find(
+    (v: Video) => v.site === "YouTube" && v.type === "Trailer",
+  );
+
+  return {
+    ...movieRes.data,
+    trailerKey: trailer?.key || null,
+  };
 };

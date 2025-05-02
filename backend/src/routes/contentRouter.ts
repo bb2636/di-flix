@@ -21,12 +21,11 @@ contentRouter.get("/top10", searchTopMovieTmDB);
 
 // 영화 카테고리 조회
 contentRouter.get("/genre/", getGenresCategory);
+// 상세 조회 (멤버만 가능)
+contentRouter.get("/detail/:movie_id", verifyToken, getContentDetail);
 
 // 장르별 영화 목록 조회
 contentRouter.get("/genre/:genre_id", searchGenreMovieTmDB);
-
-// 상세 조회 (멤버만 가능)
-contentRouter.get("/:id", searchMovieTmDB);
 
 // 메인페이지 검색창 검색 조회
 contentRouter.get("/search", searchFuncMovies);

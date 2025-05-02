@@ -9,34 +9,62 @@ import {
   fetchNowShowingMovies,
   fetchTopRatedMovies,
   fetchGenresCategory,
+  fetchMovieDetailWithTrailer,
 } from "../services/tmdbService"; // TMDB 서비스 불러오기
 import { Request, Response } from "express";
 
 // 🎯 컨텐츠 상세 조회 (멤버십 체크 포함)
+// export const getContentDetail = async (req: AuthRequest, res: Response) => {
+//   const user = req.user;
+//   const movieId = parseInt(req.params.movie_id, 10);
+
+//   if (!user) {
+//     res.status(401).json({ message: "로그인이 필요합니다." });
+//     return;
+//   }
+
+//   if (!user.is_member) {
+//     res.status(403).json({ message: "멤버십 가입이 필요합니다." });
+//     return;
+//   }
+
+//   const content = await prisma.content.findUnique({
+//     where: { movie_id: movieId },
+//   });
+
+//   if (!content) {
+//     res.status(404).json({ message: "컨텐츠를 찾을 수 없습니다." });
+//     return;
+//   }
+
+//   res.status(200).json({ content });
+// };
 export const getContentDetail = async (req: AuthRequest, res: Response) => {
   const user = req.user;
   const movieId = parseInt(req.params.movie_id, 10);
+  console.log("movieId:", movieId);
 
+  // 🔒 로그인 체크
   if (!user) {
     res.status(401).json({ message: "로그인이 필요합니다." });
     return;
   }
 
-  if (!user.is_member) {
-    res.status(403).json({ message: "멤버십 가입이 필요합니다." });
+  // 💳 멤버십 체크
+  // if (!user.is_member) {
+  //   res.status(403).json({ message: "멤버십 가입이 필요합니다." });
+  //   return;
+  // }
+
+  try {
+    const content = await fetchMovieDetailWithTrailer(movieId);
+    res.status(200).json(content);
+    return;
+  } catch (err) {
+    console.error("TMDB 상세 조회 실패", err);
+    res.status(500).json({ message: "서버 오류 발생" });
     return;
   }
-
-  const content = await prisma.content.findUnique({
-    where: { movie_id: movieId },
-  });
-
-  if (!content) {
-    res.status(404).json({ message: "컨텐츠를 찾을 수 없습니다." });
-    return;
-  }
-
-  res.status(200).json({ content });
 };
 
 // 영화 목록 조회 (프론트에 영화 목록 뿌리기)
