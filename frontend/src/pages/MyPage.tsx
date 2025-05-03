@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { getWishlist, withdrawUser } from "../apis/userApi";
+import { getWishlist, withdrawUser, getMyInfo } from "../apis/userApi";
 import styles from "../styles/mypage.module.css";
 import dummyProfile from "../assets/poster.jpeg";
 import { WishlistItem } from "../types/wishlist";
 import { useNavigate } from "react-router-dom";
-import { getUserFromToken } from "../utils/getUserFromToken";
 
 import profile1 from "../assets/profile1.jpeg";
 import profile2 from "../assets/profile2.jpeg";
@@ -12,12 +11,12 @@ import profile3 from "../assets/profile3.jpeg";
 
 function MypagePage() {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+  const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
   const [selectProfile, setSelectProfile] = useState(() => {
     return localStorage.getItem("selectedProfile") || "profile1.jpeg";
   });
   const [showProfileOptions, setShowProfileOptions] = useState(false);
-  const user = getUserFromToken();
 
   const profileImages: { [key: string]: string } = {
     "profile1.jpeg": profile1,
@@ -28,13 +27,16 @@ function MypagePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getWishlist();
-        setWishlist(res.data.wishlist);
+        //사용자 정보 가져오기
+        const userRes = await getMyInfo();
+        setUserEmail(userRes.data.user.email);
+        //위시리스트 가져오기
+        const wishres = await getWishlist();
+        setWishlist(wishres.data.wishlist);
       } catch (err) {
         console.error("위시리스트 로딩 실패", err);
       }
     };
-
     fetchData();
   }, []);
 
@@ -87,8 +89,14 @@ function MypagePage() {
           </div>
         )}
         <div className={styles.greetingWrapper}>
-          <h2 className={styles.greeting}>{user?.email.split("@")[0]} 님,</h2>
-          <p className={styles.subGreeting}>즐거운 시간되세요.</p>
+          {userEmail ? (
+          <>
+            <h2 className={styles.greeting}>{userEmail.split("@")[0]} 님,</h2>
+            <p className={styles.subGreeting}>즐거운 시간되세요.</p>
+          </>
+          ) : (
+            <p className={styles.subGreeting}>잠시만 기다려주세요...</p>
+          )}
         </div>
       </div>
 

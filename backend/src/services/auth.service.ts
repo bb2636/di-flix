@@ -46,7 +46,7 @@ export const createUser = async (input: Signup) => {
 };
 // 회원가입 로직
 export const signup = async (input: Signup) => {
-  const { email, password, is_member = false, is_deleted = true } = input;
+  const { email, password, is_member = false, is_deleted = false } = input;
 
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
@@ -83,7 +83,7 @@ export const login = async (input: Login) => {
     throw new Error("유효하지 않은 이메일 또는 비밀번호");
   }
 
-  if (user.is_deleted === false) {
+  if (user.is_deleted === true) {
     throw new Error("탈퇴한 회원입니다.");
   }
 
@@ -111,7 +111,7 @@ export const login = async (input: Login) => {
 export const withdrawUser = async (userId: number) => {
   const result = await prisma.user.updateMany({
     where: { user_id: userId },
-    data: { is_deleted: false },
+    data: { is_deleted: true },
   });
 
   if (result.count === 0) {

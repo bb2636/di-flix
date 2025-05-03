@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import LogoutButton from "../LogoutButton";
 import styles from "./Header.module.css";
+import api from "../../apis/axios";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -10,24 +11,21 @@ const Header = () => {
   const location = useLocation(); //현재 위치 감지
 
   useEffect(() => {
-    try {
-      const raw = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("token="));
-
-      if (raw) {
-        const token = decodeURIComponent(raw.split("=")[1]);
-        const payloadBase64 = token.split(".")[1];
-        const payload = JSON.parse(atob(payloadBase64));
-        console.log("payload", payload);
-        setIsLoggedIn(true);
-      } else {
+    const checkLogin = async () => {
+      try {
+        const res = await api.get("/users/me");
+        if (res.status === 200) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (err) {
+        console.error("인증 실패 또는 로그인 안됨", err);
         setIsLoggedIn(false);
       }
-    } catch (err) {
-      console.error("로그인 여부 확인 실패", err);
-      setIsLoggedIn(false);
-    }
+    };
+
+    checkLogin();
   }, [location]);
   // 라우트 이동 시마다 검사
 
