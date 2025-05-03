@@ -5,6 +5,7 @@ import {
   login as serviceLogin,
   withdrawUser,
 } from "../services/auth.service";
+import prisma from "../config/prisma";
 
 // 회원가입
 export const register = async (req: Request, res: Response) => {
@@ -33,20 +34,18 @@ export const register = async (req: Request, res: Response) => {
 
 // 로그인
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
   try {
-    const token = await serviceLogin({ email, password });
+    const token = await serviceLogin(req.body);
     //토큰 쿠키로 받기
     res
       .cookie("token", token.token, {
-        httpOnly: false,
-        secure: false, //process.env.NODE_ENV === "production",
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 60 * 60 * 1000, // 1시간
       })
       .status(200)
-      .json({ message: "로그인 성공" });
+      .json({ message: "로그인 성공", ...token });
     return;
   } catch (err) {
     const message = err instanceof Error ? err.message : "서버 오류";
@@ -70,7 +69,7 @@ export const logout = (req: Request, res: Response) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production", // HTTPS 환경에서만 쿠키 전송
-    sameSite: "strict",
+    sameSite: "lax",
   });
 
   res.status(200).json({ message: "로그아웃 되었습니다." });
@@ -92,5 +91,24 @@ export const withdraw = async (req: AuthRequest, res: Response) => {
   } catch (err) {
     console.error("회원탈퇴 실패", err);
     res.status(404).json({ message: "유저를 찾을 수 없습니다." });
+  }
+};
+
+//토큰 유효 검사
+export const me = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { user_id: req.user?.user_id },
+      select: { email: true }, //필요한 정보만 선택
+    });
+
+    if (!user) {
+      res.status(404).json({ error: "사용자를 찾을 수 없습니다." });
+      return;
+    }
+
+    res.status(200).json({ user });
+  } catch {
+    res.status(500).json({ error: "내 정보 조회 실패" });
   }
 };

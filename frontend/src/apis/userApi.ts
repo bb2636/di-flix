@@ -25,3 +25,8 @@ export const withdrawUser = () => {
 export const getWishlist = () => {
   return api.get("/wishlist");
 };
+
+//로그인 여부 확인
+export const getMyInfo = () => {
+  return api.get("/users/me");
+}
