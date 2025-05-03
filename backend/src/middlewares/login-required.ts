@@ -21,7 +21,7 @@ export const verifyToken = (
     }>(token);
 
     // 토큰 내 is_deleted 값 확인 (탈퇴한 회원이면 접근 차단)
-    if (decoded.is_deleted === false) {
+    if (decoded.is_deleted === true) {
       res.status(403).json({ error: "탈퇴한 회원입니다." });
       return;
     }

@@ -5,7 +5,6 @@ import {
   login as serviceLogin,
   withdrawUser,
 } from "../services/auth.service";
-import prisma from "../config/prisma";
 
 // 회원가입
 export const register = async (req: Request, res: Response) => {
@@ -16,7 +15,7 @@ export const register = async (req: Request, res: Response) => {
       email,
       password,
       is_member: false,
-      is_deleted: true,
+      is_deleted: false,
     });
     res.status(201).json({ message: "회원가입 성공", ...result });
   } catch (err) {
