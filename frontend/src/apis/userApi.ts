@@ -21,12 +21,27 @@ export const withdrawUser = () => {
   return api.delete("/users/withdraw"); // 유저 탈퇴 처리
 };
 
-// 위시리스트 조회 (마이페이지용)
-export const getWishlist = () => {
-  return api.get("/wishlist");
-};
-
 //로그인 여부 확인
 export const getMyInfo = () => {
   return api.get("/users/me");
 }
+
+// 찜 추가
+export const addWishlist = (movieId: number) => {
+  return api.post(`/wishlist/${movieId}`);
+};
+
+// 찜 삭제
+export const removeWishlist = (movieId: number) => {
+  return api.delete(`/wishlist/${movieId}`);
+};
+
+// 찜 목록 조회
+export const getWishlist = () => {
+  return api.get("/wishlist");
+};
+
+//찜 여부 체크
+export const checkWishlist = (movieId: number) => {
+  return api.get(`/wishlist/check/${movieId}`);
+};
