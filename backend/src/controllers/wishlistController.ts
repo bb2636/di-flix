@@ -7,7 +7,7 @@ export const addWishlist = async (req: AuthRequest, res: Response) => {
   const movieId = Number(req.params.movie_id);
 
   if (!userId || isNaN(movieId)) {
-    res.status(400).json({ message: "잘못된 요청" });
+    res.status(400).json({ message: "잘못된 요청입니다." });
     return;
   }
 
@@ -24,7 +24,7 @@ export const removeWishlist = async (req: AuthRequest, res: Response) => {
   const movieId = Number(req.params.movie_id);
 
   if (!userId || isNaN(movieId)) {
-    res.status(400).json({ message: "잘못된 요청" });
+    res.status(400).json({ message: "잘못된 요청입니다." });
     return;
   }
 
@@ -38,16 +38,33 @@ export const removeWishlist = async (req: AuthRequest, res: Response) => {
 
 export const getWishlist = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.user_id;
-
   if (!userId) {
     res.status(401).json({ message: "로그인이 필요합니다." });
     return;
   }
 
   try {
-    const wishlist = await wishlistService.getWishlist(userId);
+    const wishlist = await wishlistService.getWishlistIds(userId);
     res.status(200).json({ wishlist });
   } catch (err) {
     res.status(400).json({ message: (err as Error).message });
+  }
+};
+
+export const checkWishlist = async (req: AuthRequest, res: Response) => {
+  const userId = req.user?.user_id;
+  const movieId = Number(req.params.movie_id);
+
+  if (!userId || isNaN(movieId)) {
+    res.status(400).json({ message: "잘못된 요청" });
+    return;
+  }
+
+  try {
+    const wished = await wishlistService.checkWishlist(userId, movieId);
+    res.status(200).json({ wished });
+  } catch (err) {
+    console.error("찜 여부 확인 실패:", err);
+    res.status(500).json({ message: "찜 여부 확인 실패" });
   }
 };

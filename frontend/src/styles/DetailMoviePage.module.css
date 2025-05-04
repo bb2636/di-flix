@@ -46,3 +46,31 @@
   border: none;
   border-radius: 10px;
 }
+
+.heartWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.heartIcon {
+  font-size: 24px;
+  transition: transform 0ms ease;
+  cursor: pointer;
+}
+
+.heartIcon.active {
+  color: red;
+  transform: scale(1.1);
+}
+
+.tooltip {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  background-color: #222;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
