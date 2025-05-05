@@ -68,6 +68,10 @@
   height: 100%;
   margin-bottom: 1.2rem;
 }
+.dupStatus {
+  margin-top: 5px;
+  font-size: 0.9rem;
+}
 
 .checkboxWrapper {
   display: flex;

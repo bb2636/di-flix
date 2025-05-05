@@ -4,6 +4,7 @@ import {
   signup,
   login as serviceLogin,
   withdrawUser,
+  isEmailDuplicate,
 } from "../services/auth.service";
 import prisma from "../config/prisma";
 
@@ -110,5 +111,23 @@ export const me = async (req: AuthRequest, res: Response): Promise<void> => {
     res.status(200).json({ user });
   } catch {
     res.status(500).json({ error: "내 정보 조회 실패" });
+  }
+};
+
+//회원가입 시 이메일 중복 체크
+export const checkEmailDuplicate = async (req: Request, res: Response) => {
+  const { email } = req.query;
+
+  if (typeof email !== "string") {
+    res.status(400).json({ message: "잘못된 요청입니다" });
+    return;
+  }
+
+  try {
+    const duplicate = await isEmailDuplicate(email);
+    res.status(200).json({ duplicate });
+  } catch (err) {
+    console.log("이메일 중복 확인 실패", err);
+    res.status(500).json({ message: "서버 오류" });
   }
 };

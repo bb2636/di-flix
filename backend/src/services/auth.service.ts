@@ -127,3 +127,14 @@ export const activateMembership = async (userId: number) => {
   });
   return updatedUser;
 };
+
+//회원가입 시 이메일 중복 체크
+export const isEmailDuplicate = async (email: string): Promise<boolean> => {
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    return !!user;
+  } catch (error) {
+    console.error("Prisma 조회 실패:", error); // 👈 핵심 에러 로그
+    throw error;
+  }
+};

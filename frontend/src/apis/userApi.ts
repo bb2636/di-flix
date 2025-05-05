@@ -24,7 +24,7 @@ export const withdrawUser = () => {
 //로그인 여부 확인
 export const getMyInfo = () => {
   return api.get("/users/me");
-}
+};
 
 // 찜 추가
 export const addWishlist = (movieId: number) => {
@@ -44,4 +44,12 @@ export const getWishlist = () => {
 //찜 여부 체크
 export const checkWishlist = (movieId: number) => {
   return api.get(`/wishlist/check/${movieId}`);
+};
+
+//이메일 중복 체크
+export const checkEmailDuplicate = async (email: string): Promise<boolean> => {
+  const res = await api.get(`/users/check-email`, {
+    params: { email },
+  });
+  return res.data.duplicate; // 백엔드에서 { duplicate: true/false } 반환
 };
