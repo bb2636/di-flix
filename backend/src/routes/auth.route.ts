@@ -5,6 +5,7 @@ import {
   logout,
   withdraw,
   me,
+  checkEmailDuplicate,
 } from "../controllers/authController";
 import { verifyToken } from "../middlewares/login-required";
 
@@ -15,4 +16,5 @@ authrouter.post("/login", login);
 authrouter.post("/logout", logout);
 authrouter.delete("/withdraw", verifyToken, withdraw);
 authrouter.get("/me", verifyToken, me);
+authrouter.get("/check-email", checkEmailDuplicate);
 export default authrouter;
