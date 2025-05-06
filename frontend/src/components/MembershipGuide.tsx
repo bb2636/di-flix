@@ -11,14 +11,6 @@ const MembershipGuide = () => {
           <span className={styles.name}>STANDARD</span>
           <span className={styles.price}>5,500원 / 1개월</span>
         </li>
-        {/* <li className={styles.membershipItem}>
-          <span className={styles.name}>PREMIUM</span>
-          <span className={styles.price}>13,500원 / 1개월</span>
-        </li>
-        <li className={styles.membershipItem}>
-          <span className={styles.name}>SUPERIOR</span>
-          <span className={styles.price}>17,500원 / 1개월</span>
-        </li> */}
       </ul>
     </section>
   );

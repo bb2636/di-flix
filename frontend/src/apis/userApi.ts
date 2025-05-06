@@ -45,7 +45,6 @@ export const getWishlist = () => {
 export const checkWishlist = (movieId: number) => {
   return api.get(`/wishlist/check/${movieId}`);
 };
-
 //이메일 중복 체크
 export const checkEmailDuplicate = async (email: string): Promise<boolean> => {
   const res = await api.get(`/users/check-email`, {

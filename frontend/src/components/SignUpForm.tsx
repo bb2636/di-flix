@@ -101,8 +101,13 @@ function SignUpForm() {
           </button>
         </div>
         {emailChecked && (
-          <p className={style.dupStatus} style={{ color: isDuplicate ? "red" : "green" }}>
-            {isDuplicate ? "이미 사용 중인 이메일입니다." : "사용 가능한 이메일입니다."}
+          <p
+            className={style.dupStatus}
+            style={{ color: isDuplicate ? "red" : "green" }}
+          >
+            {isDuplicate
+              ? "이미 사용 중인 이메일입니다."
+              : "사용 가능한 이메일입니다."}
           </p>
         )}
 
