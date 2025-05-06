@@ -47,7 +47,11 @@ const ToptenMovies = () => {
         <div className={styles.thumbnailGrid} ref={scrollRef}>
           {movies.map((movie, idx) => (
             <div key={movie.id} className={styles.movieCard}>
-              <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
+              <Link
+                to={`/movie/${movie.id}`}
+                className={styles.linkWrapper}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 <img
                   src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   alt={movie.title}

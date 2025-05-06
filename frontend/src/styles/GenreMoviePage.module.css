@@ -1,62 +1,149 @@
 .pageWrapper {
   padding: 24px;
+  margin-top: 64px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
 
 .title {
-  font-size: 30px;
+  font-size: 2rem;
   font-weight: bold;
-  color: white;
-  margin-left: 30px;
-  margin-bottom: 10px;
+  color: #fff;
+  margin-bottom: 24px;
+  margin-left: 0;
+  text-align: left;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+.title::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, #cdb0b6, transparent);
+  border-radius: 2px;
 }
 
 .movieGrid {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .movieCard {
-  width: 150px;
+  width: 160px;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  margin-bottom: 8px;
 }
 
 .movieCard:hover {
-  transform: scale(1.05);
+  transform: translateY(-8px) scale(1.05);
+  z-index: 10;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .poster {
-  width: 100%;
+  width: 160px;
+  height: 240px;
   border-radius: 8px;
   object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .movieTitle {
-  margin-top: 8px;
-  color: white;
+  margin-top: 12px;
+  color: #fff;
   font-size: 14px;
+  max-width: 160px;
+  word-wrap: break-word;
+  text-align: center;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
 }
 
-.divider {
-  border: none;
-  height: 1px;
-  background-color: #ccc;
-  margin: 20px 2.5%;
-  width: 95%;
+.movieTitle a:hover,
+.movieTitle a:active {
+  text-decoration: none;
+  color: #cdb0b6;
 }
+
+hr,
+.divider {
+  display: none;
+}
+
 .loadMoreButton {
   display: block;
-  margin: 20px auto;
-  padding: 10px 24px;
+  margin: 24px auto 0 auto;
+  padding: 12px 32px;
   font-size: 16px;
-  background: #4b360d;
-  color: white;
+  background: linear-gradient(to right, #cdb0b6, #e6c7cf);
+  color: #1a1a1a;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .loadMoreButton:hover {
-  background-color: #e50914;
+  background: linear-gradient(to right, #e6c7cf, #cdb0b6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 900px) {
+  .pageWrapper {
+    max-width: 98vw;
+  }
+  .movieCard,
+  .poster {
+    width: 120px;
+    min-width: 100px;
+    height: 180px;
+    max-width: 100%;
+  }
+  .movieTitle {
+    max-width: 120px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pageWrapper {
+    max-width: 100vw;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .movieGrid {
+    gap: 8px;
+  }
+  .movieCard,
+  .poster {
+    width: 90px;
+    min-width: 80px;
+    height: 130px;
+    padding: 4px;
+  }
+  .movieTitle {
+    max-width: 90px;
+    font-size: 10px;
+  }
 }

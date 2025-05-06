@@ -44,9 +44,6 @@ const GenreMoviePage = () => {
 
   return (
     <section className={styles.pageWrapper}>
-      <hr />
-      <hr />
-      <hr />
       <h2 className={styles.title}>{genreName}</h2>
       <hr className={styles.divider} />
       <div className={styles.movieGrid}>

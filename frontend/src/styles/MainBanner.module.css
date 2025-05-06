@@ -2,64 +2,94 @@
 
 .bannerWrapper {
   display: flex;
-  padding: 48px 24px;
-  background-color: #1e1e1e;
+  padding: 40px 12px;
+  background: linear-gradient(to right, #1a1a1a, #2a2a2a); /* 그라데이션 배경 */
   color: white;
   gap: 40px;
   align-items: center;
   justify-content: center;
-  position: relative; /* 버튼 위치 기준을 위해 추가 */
+  position: relative;
   border-radius: 20px;
   overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* 그림자 효과 강화 */
+  margin: 0 auto; /* 중앙 정렬 */
+  max-width: 1400px; /* 더 넓게 */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .posterWrapper {
   flex-shrink: 0;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.posterWrapper:hover {
+  transform: scale(1.02); /* 호버 시 살짝 확대 */
 }
 
 .posterImage {
   width: 240px;
   height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border-radius: 12px; /* 모서리 더 둥글게 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* 그림자 효과 강화 */
+  transition: all 0.3s ease;
 }
 
 .descriptionWrapper {
   max-width: 500px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2); /* 반투명 배경 */
+  border-radius: 12px;
+  backdrop-filter: blur(5px); /* 블러 효과 */
 }
 
 .title {
-  font-size: 32px;
+  font-size: 36px; /* 크기 증가 */
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  background: linear-gradient(to right, #fff, #cdb0b6); /* 그라데이션 텍스트 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 */
 }
 
 .meta {
   font-size: 14px;
   color: #aaa;
   margin-bottom: 16px;
+  letter-spacing: 0.5px; /* 자간 증가 */
 }
 
 .summary {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px; /* 크기 증가 */
+  line-height: 1.8; /* 줄 간격 증가 */
   margin-bottom: 24px;
   white-space: pre-line;
+  color: #e0e0e0; /* 색상 조정 */
 }
 
 .watchButton {
-  padding: 10px 20px;
-  background-color: #cdb0b6;
-  color: black;
+  padding: 12px 24px; /* 패딩 증가 */
+  background: linear-gradient(to right, #cdb0b6, #e6c7cf); /* 그라데이션 배경 */
+  color: #1a1a1a; /* 텍스트 색상 변경 */
   font-weight: bold;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px; /* 모서리 더 둥글게 */
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  font-size: 16px; /* 크기 증가 */
 }
 
 .watchButton:hover {
-  background-color: #e6c7cf;
+  background: linear-gradient(
+    to right,
+    #e6c7cf,
+    #cdb0b6
+  ); /* 그라데이션 방향 변경 */
+  transform: translateY(-2px); /* 호버 시 살짝 위로 이동 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 그림자 효과 강화 */
 }
 
 /* 🎯 슬라이드 좌우 이동 버튼 스타일 추가 */
@@ -68,23 +98,24 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1); /* 배경색 변경 */
   border: none;
-  width: 44px;
-  height: 44px;
+  width: 48px; /* 크기 증가 */
+  height: 48px; /* 크기 증가 */
   border-radius: 50%;
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.6rem; /* 크기 증가 */
   cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease;
+  transition: all 0.3s ease;
   z-index: 10;
+  backdrop-filter: blur(5px); /* 블러 효과 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
 }
 
 .navButton:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1); /* 호버 시 확대 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 그림자 효과 강화 */
 }
 
 .left {
@@ -98,17 +129,17 @@
 /* 기존 스타일은 그대로 두고 아래만 추가 */
 
 .fadeIn {
-  animation: fadeIn 0.3s ease-in forwards;
+  animation: fadeIn 0.5s ease-in forwards; /* 지속 시간 증가 */
 }
 
 .fadeOut {
-  animation: fadeOut 0.3s ease-out forwards;
+  animation: fadeOut 0.5s ease-out forwards; /* 지속 시간 증가 */
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px); /* 이동 거리 증가 */
   }
   to {
     opacity: 1;
@@ -123,6 +154,6 @@
   }
   to {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px); /* 이동 거리 증가 */
   }
 }
