@@ -1,5 +1,5 @@
 .categorySection {
-  margin-top: 100px;
+  margin-top: 64px;
   padding: 40px 24px;
   background-color: #ffffff;
   text-align: center;
@@ -20,22 +20,36 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px;
+  gap: 18px 28px;
   margin-top: 50px;
 }
 
 .categoryBtn {
-  background-color: #f0f0f0;
+  background: linear-gradient(90deg, #f8e1e7 0%, #cdb0b6 100%);
+  color: #1a1a1a;
+  font-weight: 700;
   border: none;
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 20px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  border-radius: 24px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  box-shadow:
+    0 6px 18px rgba(205, 176, 182, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: all 0.25s cubic-bezier(0.4, 2, 0.6, 1);
+  letter-spacing: 1.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .categoryBtn:hover {
-  background-color: #ddd;
+  background: linear-gradient(90deg, #cdb0b6 0%, #f8e1e7 100%);
+  transform: scale(1.07) translateY(-2px);
+  box-shadow:
+    0 10px 24px rgba(205, 176, 182, 0.22),
+    0 4px 16px rgba(0, 0, 0, 0.22);
+  color: #1a1a1a;
 }
 
 .divider {

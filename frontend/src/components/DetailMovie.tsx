@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Movie } from "../types/movie";
 import styles from "../styles/DetailMoviePage.module.css";
 import { addWishlist, removeWishlist, checkWishlist } from "../apis/userApi";
+import { genreMap } from "../types/genre";
 
 interface DetailMovieProps {
   movie: Movie;
@@ -40,6 +41,29 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
     }
   };
 
+  // 영화 정보 메타 생성
+  const year = movie.release_date ? movie.release_date.slice(0, 4) : "-";
+  const rating = movie.vote_average ? movie.vote_average.toFixed(2) : "-";
+  let genres = "";
+  if (movie.genre_ids && Array.isArray(movie.genre_ids)) {
+    genres = movie.genre_ids
+      .map((id) => genreMap[id])
+      .filter(Boolean)
+      .join(", ");
+  } else if (
+    Array.isArray(
+      (movie as unknown as { genres?: { id: number; name: string }[] }).genres,
+    )
+  ) {
+    genres = (
+      movie as unknown as { genres: { id: number; name: string }[] }
+    ).genres
+      .map((g) => g.name)
+      .filter(Boolean)
+      .join(", ");
+  }
+  const meta = `${year} · 평점 ${rating}${genres ? ` · ${genres}` : ""}`;
+
   return (
     <div className={styles.detailContainer}>
       <img
@@ -49,7 +73,7 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
       />
       <div className={styles.info}>
         <h2 className={styles.title}>
-          {movie.title} ({movie.release_date?.slice(0, 4)})
+          {movie.title} ({year})
           <span
             className={styles.heartIcon}
             onClick={handleWishlistToggle}
@@ -58,6 +82,7 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
             {isWished ? "❤️" : "🤍"}
           </span>
         </h2>
+        <div className={styles.meta}>{meta}</div>
         <p className={styles.overview}>{movie.overview}</p>
 
         {movie.trailerKey && (

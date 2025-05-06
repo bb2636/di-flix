@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getNowShowingMovies } from "../apis/axios";
 import { Movie } from "../types/movie";
 import styles from "../styles/NowShowingMovies.module.css";
+import commonStyles from "../styles/Common.module.css";
 import { Link } from "react-router-dom";
 const NowShowingMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -28,28 +29,32 @@ const NowShowingMovies = () => {
   }, []);
 
   return (
-    <section className={styles.sectionWrapper}>
-      <h1 className={styles.title}>현재 상영작</h1>
-      <div className={styles.thumbnailGrid}>
-        {movies.map((movie) => (
-          <div key={movie.id} className={styles.movieCard}>
-            <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
-              <img
-                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                alt={movie.title}
-                className={styles.thumbnail}
-              />
-              <p className={styles.titleText}>{movie.title}</p>
-            </Link>
-          </div>
-        ))}
-      </div>
-      {hasMore && (
-        <button className={styles.loadMoreButton} onClick={loadMovies}>
-          더 불러오기
-        </button>
-      )}
-    </section>
+    <>
+      <section className={styles.sectionWrapper}>
+        <h1 className={styles.title}>현재 상영작</h1>
+        <div className={styles.thumbnailGrid}>
+          {movies.map((movie) => (
+            <div key={movie.id} className={styles.movieCard}>
+              <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                  alt={movie.title}
+                  className={styles.thumbnail}
+                />
+                <p className={styles.titleText}>{movie.title}</p>
+              </Link>
+            </div>
+          ))}
+        </div>
+        {hasMore && (
+          <button className={commonStyles.fancyButton} onClick={loadMovies}>
+            <span style={{ fontSize: "1.2em", marginRight: "4px" }}>↓</span>더
+            불러오기
+          </button>
+        )}
+      </section>
+      <hr className={commonStyles.divider} />
+    </>
   );
 };
 

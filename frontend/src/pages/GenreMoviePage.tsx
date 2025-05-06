@@ -4,6 +4,7 @@ import { fetchMoviesByGenre } from "../apis/axios";
 import { Movie } from "../types/movie";
 import { genreMap } from "../types/genre";
 import styles from "../styles/GenreMoviePage.module.css";
+import commonStyles from "../styles/Common.module.css";
 import { Link } from "react-router-dom";
 
 const GenreMoviePage = () => {
@@ -44,9 +45,6 @@ const GenreMoviePage = () => {
 
   return (
     <section className={styles.pageWrapper}>
-      <hr />
-      <hr />
-      <hr />
       <h2 className={styles.title}>{genreName}</h2>
       <hr className={styles.divider} />
       <div className={styles.movieGrid}>
@@ -65,8 +63,9 @@ const GenreMoviePage = () => {
       </div>
 
       {page <= totalPages && (
-        <button className={styles.loadMoreButton} onClick={handleLoadMore}>
-          더 불러오기
+        <button className={commonStyles.fancyButton} onClick={handleLoadMore}>
+          <span style={{ fontSize: "1.2em", marginRight: "4px" }}>↓</span>더
+          불러오기
         </button>
       )}
     </section>

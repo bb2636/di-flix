@@ -1,65 +1,89 @@
 import styles from "../styles/MainBanner.module.css";
-import poster1 from "../assets/poster.jpeg";
-import poster2 from "../assets/poster.jpeg";
-import poster3 from "../assets/poster.jpeg";
+import { fetchToptenMovies } from "../apis/axios";
+import { Movie } from "../types/movie";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { genreMap } from "../types/genre";
 
-const banners = [
-  {
-    poster: poster1,
-    title: "폭싹 속았수다",
-    meta: "2025 · 12부 · 시리즈 · 로맨스 · 드라마 · 항로",
-    summary:
-      "망하고 요망한 소녀와 무지처럼 우직하고 단단한 소년... 시대를 뛰어넘어 피어나는 사랑 이야기.",
-  },
-  {
-    poster: poster2,
-    title: "그날의 우리는",
-    meta: "2023 · 영화 · 드라마 · 성장",
-    summary: "과거와 현재, 서로를 잊지 못한 두 사람의 이야기.",
-  },
-  {
-    poster: poster3,
-    title: "행복의 조건",
-    meta: "2024 · 16부작 · 휴먼 · 감성",
-    summary: "삶의 균형과 진짜 행복을 찾는 사람들의 따뜻한 이야기.",
-  },
-];
 const MainBanner = () => {
+  const [banners, setBanners] = useState<Movie[]>([]);
   const [current, setCurrent] = useState(0);
   const [fade, setFade] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getTop3Movies = async () => {
+      try {
+        const data = await fetchToptenMovies();
+        setBanners(data.slice(0, 3));
+      } catch (error) {
+        console.error("TOP 3 불러오기 실패", error);
+      }
+    };
+    getTop3Movies();
+  }, []);
 
   const triggerFade = (nextIndex: number) => {
     setFade(true);
     setTimeout(() => {
       setCurrent(nextIndex);
       setFade(false);
-    }, 300); // fade-out duration과 일치
+    }, 300);
   };
 
   const goNext = () => {
+    if (banners.length === 0) return;
     const next = (current + 1) % banners.length;
     triggerFade(next);
   };
 
   const goPrev = () => {
+    if (banners.length === 0) return;
     const prev = (current - 1 + banners.length) % banners.length;
     triggerFade(prev);
   };
 
   useEffect(() => {
+    if (banners.length === 0) return;
     const interval = setInterval(() => {
       goNext();
     }, 6000);
-
     return () => clearInterval(interval);
-  }, [current]);
+  }, [current, banners.length]);
 
-  const { poster, title, meta, summary } = banners[current];
+  if (banners.length === 0) return null;
+
+  const movie = banners[current];
+  const poster = movie.poster_path
+    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+    : "https://via.placeholder.com/240x360?text=No+Image";
+  const title = movie.title;
+  const genreNames = movie.genre_ids
+    ? movie.genre_ids
+        .map((id) => genreMap[id])
+        .filter(Boolean)
+        .join(", ")
+    : "";
+  const meta = [
+    movie.release_date ? movie.release_date.slice(0, 4) : "-",
+    `평점 ${movie.vote_average ?? "-"}`,
+    genreNames,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+  const summary = movie.overview || "줄거리 정보가 없습니다.";
+
+  // summary 길이에 따라 폰트 크기 동적 조정
+  let summaryFontSize = 16;
+  if (summary.length > 180) summaryFontSize = 13;
+  else if (summary.length > 120) summaryFontSize = 14;
+  else if (summary.length > 80) summaryFontSize = 15;
 
   return (
     <section
-      className={`${styles.bannerWrapper} ${fade ? styles.fadeOut : styles.fadeIn}`}
+      className={`${styles.bannerWrapper} ${
+        fade ? styles.fadeOut : styles.fadeIn
+      }`}
     >
       <div className={styles.posterWrapper}>
         <img className={styles.posterImage} src={poster} alt={title} />
@@ -67,10 +91,17 @@ const MainBanner = () => {
       <div className={styles.descriptionWrapper}>
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.meta}>{meta}</p>
-        <p className={styles.summary}>{summary}</p>
-        <button className={styles.watchButton}>시청하기</button>
+        <p className={styles.summary} style={{ fontSize: summaryFontSize }}>
+          {summary}
+        </p>
+        <button
+          className={styles.fancyButton}
+          onClick={() => navigate(`/movie/${movie.id}`)}
+        >
+          <span style={{ fontSize: "1.2em", marginRight: "4px" }}>▶</span>
+          시청하기
+        </button>
       </div>
-
       <button className={`${styles.navButton} ${styles.left}`} onClick={goPrev}>
         ◀
       </button>
