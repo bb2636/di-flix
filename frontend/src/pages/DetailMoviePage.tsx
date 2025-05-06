@@ -21,9 +21,9 @@ const DetailMoviePage = () => {
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           if (error.response?.status === 401) {
-            setError("unauth"); // 👈 로그인 안 함
+            setError("unauth"); //  로그인 안 함
           } else if (error.response?.status === 403) {
-            navigate("/membershipRequired"); // 👈 멤버십 없음
+            navigate("/membershipRequired"); // 멤버십 없음
           } else {
             console.error("영화 상세 정보 불러오기 실패:", error);
           }

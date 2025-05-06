@@ -67,12 +67,22 @@
 
 .divider {
   border: none;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #333, transparent);
-  margin: 32px 0;
+  height: 4px;
   width: 100%;
   max-width: 1200px;
-  opacity: 0.5;
+  margin: 0 auto 40px auto;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #fff 30%,
+    #fff 70%,
+    transparent
+  );
+  opacity: 1;
+  border-radius: 2px;
+  align-self: stretch;
+  outline: 2px solid red;
+  box-shadow: 0 0 10px 2px #fff;
 }
 
 @media (max-width: 900px) {

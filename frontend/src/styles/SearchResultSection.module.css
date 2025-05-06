@@ -4,12 +4,38 @@
 }
 
 .title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 50px;
-  margin-bottom: 16px;
-  color: whitesmoke;
-  text-decoration: none;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+  margin-top: 40px;
+  margin-bottom: 32px;
+  text-align: center;
+  background: linear-gradient(90deg, #fff 60%, #e6c7cf 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 4px 16px rgba(205, 176, 182, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.18);
+  letter-spacing: 1.5px;
+  line-height: 1.15;
+  border-radius: 8px;
+  padding: 0 8px;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.title::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, #cdb0b6, transparent);
+  border-radius: 2px;
 }
 
 .titleText {

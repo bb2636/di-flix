@@ -6,4 +6,5 @@ export interface Movie {
   release_date?: string;
   vote_average?: number;
   trailerKey?: string;
+  genre_ids?: number[];
 }

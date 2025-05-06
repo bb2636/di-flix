@@ -33,46 +33,49 @@ const ToptenMovies = () => {
   };
 
   return (
-    <section className={styles.sectionWrapper}>
-      <h1 className={styles.title}>🔥 TOP 10</h1>
+    <>
+      <section className={styles.sectionWrapper}>
+        <h1 className={styles.title}>🔥 TOP 10</h1>
 
-      <div className={styles.carousel}>
-        <button
-          className={styles.arrowLeft}
-          onClick={() => handleScroll("left")}
-        >
-          ❮
-        </button>
+        <div className={styles.carousel}>
+          <button
+            className={styles.arrowLeft}
+            onClick={() => handleScroll("left")}
+          >
+            ❮
+          </button>
 
-        <div className={styles.thumbnailGrid} ref={scrollRef}>
-          {movies.map((movie, idx) => (
-            <div key={movie.id} className={styles.movieCard}>
-              <Link
-                to={`/movie/${movie.id}`}
-                className={styles.linkWrapper}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <img
-                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                  alt={movie.title}
-                  className={styles.thumbnail}
-                />
-                <p className={styles.titleText}>
-                  {idx + 1}. {movie.title}
-                </p>
-              </Link>
-            </div>
-          ))}
+          <div className={styles.thumbnailGrid} ref={scrollRef}>
+            {movies.map((movie, idx) => (
+              <div key={movie.id} className={styles.movieCard}>
+                <Link
+                  to={`/movie/${movie.id}`}
+                  className={styles.linkWrapper}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <img
+                    src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                    alt={movie.title}
+                    className={styles.thumbnail}
+                  />
+                  <p className={styles.titleText}>
+                    {idx + 1}. {movie.title}
+                  </p>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <button
+            className={styles.arrowRight}
+            onClick={() => handleScroll("right")}
+          >
+            ❯
+          </button>
         </div>
-
-        <button
-          className={styles.arrowRight}
-          onClick={() => handleScroll("right")}
-        >
-          ❯
-        </button>
-      </div>
-    </section>
+      </section>
+      <hr className={styles.divider} />
+    </>
   );
 };
 

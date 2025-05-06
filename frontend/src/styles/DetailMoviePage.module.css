@@ -48,12 +48,23 @@
   margin-bottom: 8px;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .meta {
-  font-size: 1rem;
-  color: #cdb0b6;
-  margin-bottom: 8px;
+  font-size: 1.15rem;
+  color: #e6c7cf;
+  font-weight: 600;
+  margin-bottom: 18px;
+  letter-spacing: 1.1px;
+  text-shadow:
+    0 2px 8px rgba(205, 176, 182, 0.13),
+    0 1px 4px rgba(0, 0, 0, 0.13);
+  background: linear-gradient(90deg, #fff 60%, #e6c7cf 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+  text-align: center;
 }
 
 .overview {
@@ -173,4 +184,12 @@
   font-size: 12px;
   border-radius: 4px;
   white-space: nowrap;
+}
+
+.loading {
+  color: #fff;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 120px;
+  min-height: 200px;
 }
