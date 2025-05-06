@@ -3,7 +3,7 @@ import LoginPage from "./pages/loginPage";
 import App from "./App";
 import ReactDOM from "react-dom/client";
 import MainPage from "./pages/MainPage";
-import SignupPage from "./pages/signupPage";
+import SignupPage from "./pages/SignupPage";
 import MembershipRequiredPage from "./pages/MembershipRequiredPage";
 import MyPage from "./pages/MyPage";
 import GenreMoviePage from "./pages/GenreMoviePage";

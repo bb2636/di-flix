@@ -13,57 +13,35 @@ import {
 } from "../services/tmdbService"; // TMDB 서비스 불러오기
 import { Request, Response } from "express";
 
-// 🎯 컨텐츠 상세 조회 (멤버십 체크 포함)
-// export const getContentDetail = async (req: AuthRequest, res: Response) => {
-//   const user = req.user;
-//   const movieId = parseInt(req.params.movie_id, 10);
-
-//   if (!user) {
-//     res.status(401).json({ message: "로그인이 필요합니다." });
-//     return;
-//   }
-
-//   if (!user.is_member) {
-//     res.status(403).json({ message: "멤버십 가입이 필요합니다." });
-//     return;
-//   }
-
-//   const content = await prisma.content.findUnique({
-//     where: { movie_id: movieId },
-//   });
-
-//   if (!content) {
-//     res.status(404).json({ message: "컨텐츠를 찾을 수 없습니다." });
-//     return;
-//   }
-
-//   res.status(200).json({ content });
-// };
+// 컨텐츠 상세조회 (멤버십 체크 포함)
 export const getContentDetail = async (req: AuthRequest, res: Response) => {
-  const user = req.user;
+  const loginUser = req.user; // 이름 충돌 피하기 위해 변경
   const movieId = parseInt(req.params.movie_id, 10);
   console.log("movieId:", movieId);
 
-  // 🔒 로그인 체크
-  if (!user) {
+  // 로그인 체크
+  if (!loginUser?.user_id) {
     res.status(401).json({ message: "로그인이 필요합니다." });
     return;
   }
 
-  // 💳 멤버십 체크
-  // if (!user.is_member) {
-  //   res.status(403).json({ message: "멤버십 가입이 필요합니다." });
-  //   return;
-  // }
-
   try {
+    // 💡 사용자 정보 DB에서 실시간 조회
+    const userInfo = await prisma.user.findUnique({
+      where: { user_id: loginUser.user_id },
+      select: { is_member: true },
+    });
+
+    if (!userInfo?.is_member) {
+      res.status(403).json({ message: "멤버십 가입이 필요합니다." });
+      return;
+    }
+
     const content = await fetchMovieDetailWithTrailer(movieId);
     res.status(200).json(content);
-    return;
   } catch (err) {
     console.error("TMDB 상세 조회 실패", err);
     res.status(500).json({ message: "서버 오류 발생" });
-    return;
   }
 };
 
@@ -128,7 +106,6 @@ export const searchGenreMovieTmDB = async (req: Request, res: Response) => {
 
   try {
     const { movies, totalPages } = await fetchMoviesByGenre(genreId, page);
-    console.log("movies:", movies);
     if (movies.length === 0) {
       res.status(404).json({ message: "해당 장르에 대한 영화가 없습니다." });
       return;

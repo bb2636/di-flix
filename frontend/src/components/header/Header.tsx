@@ -19,8 +19,8 @@ const Header = () => {
         } else {
           setIsLoggedIn(false);
         }
-      } catch (err) {
-        console.error("인증 실패 또는 로그인 안됨", err);
+      } catch {
+        // console.error("인증 실패 또는 로그인 안됨", err);
         setIsLoggedIn(false);
       }
     };
