@@ -48,8 +48,9 @@ const NowShowingMovies = () => {
         </div>
         {hasMore && (
           <button className={commonStyles.fancyButton} onClick={loadMovies}>
-            <span style={{ fontSize: "1.2em", marginRight: "4px" }}>↓</span>더
-            불러오기
+            <span style={{ fontSize: "1.2em", marginRight: "4px" }}>
+              더 불러오기
+            </span>
           </button>
         )}
       </section>
