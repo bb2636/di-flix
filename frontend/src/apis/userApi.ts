@@ -38,7 +38,7 @@ export const removeWishlist = (movieId: number) => {
 
 // 찜 목록 조회
 export const getWishlist = () => {
-  return api.get("/wishlist");
+  return api.get("/wishlist/");
 };
 
 //찜 여부 체크
