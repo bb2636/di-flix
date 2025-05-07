@@ -20,7 +20,10 @@ export const confirmPayment = async (req: Request, res: Response) => {
 
     if (tossResponse.status === "DONE") {
       await activateMembership(userId);
-      res.status(200).json({ message: "결제 성공, 멤버십 활성화 완료!" });
+      res.status(200).json({
+        message: "결제 성공 및 멤버십 활성화 완료",
+        data: tossResponse,
+      });
       return;
     } else {
       res.status(400).json({ message: "결제 미완료 상태입니다." });

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../styles/SearchResultSection.module.css";
 import { Movie } from "../types/movie";
-import { Link } from "react-router-dom";
+import { StyledLink } from "./StyledLink";
 
 interface Props {
   title: string;
@@ -16,7 +16,7 @@ const SearchResultSection: React.FC<Props> = ({ title, movies }) => {
       <div className={styles.thumbnailGrid}>
         {movies.map((movie) => (
           <div key={movie.id} className={styles.movieCard}>
-            <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
+            <StyledLink to={`/movie/${movie.id}`} className={styles.linkWrapper}>
               <img
                 key={movie.id}
                 src={
@@ -28,7 +28,7 @@ const SearchResultSection: React.FC<Props> = ({ title, movies }) => {
                 alt={movie.title}
               />
               <p className={styles.titleText}>{movie.title}</p>
-            </Link>
+            </StyledLink>
           </div>
         ))}
       </div>
