@@ -1,18 +1,18 @@
+import { useEffect } from "react";
 import styles from "../styles/MembershipGuide.module.css";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../apis/userStore"; // ✅ 상태에서 멤버십 확인
+import { useUserStore } from "../apis/userStore";
 
 const MembershipGuide = () => {
   const navigate = useNavigate();
-  const user = useUserStore((state) => state.user); // ✅ 현재 로그인 유저
+  const user = useUserStore((state) => state.user);
+
+  const isMember = user?.is_member === true || user?.is_member === "true";
+
+  if (isMember) return null;
 
   const handleClick = () => {
-    if (user?.is_member) {
-      alert("이미 멤버십에 가입되어 있습니다.");
-      return;
-    }
-
-    navigate("/membershipRequired"); // ✅ 아직 멤버십 없으면 결제 페이지로 이동
+    navigate("/membershipRequired");
   };
 
   return (
