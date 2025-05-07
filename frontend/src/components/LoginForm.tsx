@@ -3,15 +3,17 @@ import { login } from "../apis/userApi";
 import { useNavigate } from "react-router-dom";
 import style from "../styles/loginForm.module.css";
 
+
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  
   const handleLogin = async () => {
     try {
-      await login({ email, password });
+      await login({ email, password }); // AxiosResponse
       alert("로그인 성공!");
       navigate("/");
     } catch (err: unknown) {

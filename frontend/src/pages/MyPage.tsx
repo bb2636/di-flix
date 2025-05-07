@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getWishlist, withdrawUser, getMyInfo } from "../apis/userApi";
-import styles from "../styles/mypage.module.css";
+import styles from "../styles/MyPage.module.css";
 import dummyProfile from "../assets/poster.jpeg";
 import { useNavigate } from "react-router-dom";
 import { Movie } from "../types/movie"; // TMDB용 타입

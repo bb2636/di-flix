@@ -100,7 +100,7 @@ export const me = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = await prisma.user.findUnique({
       where: { user_id: req.user?.user_id },
-      select: { email: true }, //필요한 정보만 선택
+      select: { email: true, is_member: true }, //필요한 정보만 선택
     });
 
     if (!user) {
