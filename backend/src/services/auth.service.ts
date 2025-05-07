@@ -120,12 +120,13 @@ export const withdrawUser = async (userId: number) => {
 };
 
 // ✅ 멤버십 활성화 함수
-export const activateMembership = async (userId: number) => {
-  const updatedUser = await prisma.user.update({
+export const activateMembership = async (userId: number): Promise<void> => {
+  await prisma.user.update({
     where: { user_id: userId },
-    data: { is_member: true },
+    data: {
+      is_member: true,
+    },
   });
-  return updatedUser;
 };
 
 //회원가입 시 이메일 중복 체크

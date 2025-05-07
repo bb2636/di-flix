@@ -3,7 +3,7 @@ import { Movie } from "../types/movie";
 import { getTopRatedMovies } from "../apis/axios";
 import styles from "../styles/TopRatedMovies.module.css";
 import commonStyles from "../styles/Common.module.css";
-import { Link } from "react-router-dom";
+import { StyledLink } from "./StyledLink";
 
 const TopRatedMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -35,14 +35,14 @@ const TopRatedMovies = () => {
         <div className={styles.thumbnailGrid}>
           {movies.map((movie) => (
             <div key={movie.id} className={styles.movieCard}>
-              <Link to={`/movie/${movie.id}`} className={styles.linkWrapper}>
+              <StyledLink to={`/movie/${movie.id}`} className={styles.linkWrapper}>
                 <img
                   src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   alt={movie.title}
                   className={styles.thumbnail}
                 />
                 <p className={styles.titleText}>{movie.title}</p>
-              </Link>
+              </StyledLink>
             </div>
           ))}
         </div>
