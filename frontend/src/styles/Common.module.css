@@ -1,0 +1,28 @@
+.fancyButton {
+  padding: 10px 22px;
+  background: linear-gradient(90deg, #f8e1e7 0%, #cdb0b6 100%);
+  color: #1a1a1a;
+  font-weight: 900;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow:
+    0 4px 12px rgba(205, 176, 182, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.13);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.22s cubic-bezier(0.4, 2, 0.6, 1);
+  letter-spacing: 1.1px;
+  margin: 24px auto 0 auto;
+  align-self: center;
+}
+.fancyButton:hover {
+  background: linear-gradient(90deg, #cdb0b6 0%, #f8e1e7 100%);
+  transform: scale(1.06) translateY(-1px);
+  box-shadow:
+    0 8px 18px rgba(205, 176, 182, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.18);
+  color: #a14e6c;
+}
