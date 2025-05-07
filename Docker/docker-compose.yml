@@ -1,17 +1,36 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  postgres:
-    image: postgres:latest
-    container_name: diflix-postgres
+  frontend:
+    build:
+      context: ../frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ../backend
+    ports:
+      - "4000:4000"
+    env_file:
+      - ../backend/.env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: diflixdb
+      - DATABASE_URL=postgresql://postgres:1234@db:5432/diflixdb
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=diflixdb
     ports:
       - "5432:5432"
     volumes:
-      - diflixdb_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  diflixdb_data:
+  pgdata:

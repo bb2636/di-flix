@@ -1,0 +1,21 @@
+# 1. Node.js 베이스 이미지 (alpine은 경량화 버전)
+FROM node:18-alpine
+
+# 2. 앱 작업 디렉토리 설정
+WORKDIR /app
+
+# 3. package.json과 lock 파일 복사 후 종속성 설치
+COPY package*.json ./
+RUN npm install
+
+# 4. 나머지 모든 파일 복사
+COPY . .
+
+# 5. TypeScript 빌드
+RUN npm run build
+
+# 6. 애플리케이션 포트 오픈 (필요한 포트로 변경 가능)
+EXPOSE 3000
+
+# 7. 실행 명령: 빌드된 JS 실행
+CMD ["npm", "run", "prod"]
