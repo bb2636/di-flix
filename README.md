@@ -32,28 +32,68 @@ Node.js, React, TypeScript를 사용하여 제작한 OTT 클론 프로젝트입�
 
 # ⚙️ 기술 스택
 
-## 영역 기술
+### FE
+<div align=center>
 
-- 프론트엔드 React, TypeScript, CSS Modules
-- 백엔드 Node.js, Express, TypeScript, Prisma
-- DB PostgreSQL
-- 기타 TMDB API, Docker, ESLint, dotenv, prettier
+  <img src="https://img.shields.io/badge/react-00A8E1?style=for-the-badge&logo=react&logoColor=black">
+  <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/prettier-FF4F8B?style=for-the-badge&logo=prettier&logoColor=white">
+  <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=white">
+  <br>
+
+  <img src="https://img.shields.io/badge/axios-6935D3?style=for-the-badge&logo=axios&logoColor=white">
+  <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+  <img src="https://img.shields.io/badge/npm-ED1C24?style=for-the-badge&logo=npm&logoColor=white">
+  <br>
+</div>
+
+### BE
+<div align=center>
+  <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+  <img src="https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=Node.js&logoColor=black">
+  <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
+  <img src="https://img.shields.io/badge/prettier-FF4F8B?style=for-the-badge&logo=prettier&logoColor=white">
+  <br>
+  <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Express&logoColor=white">
+  <img src="https://img.shields.io/badge/nginx-006272?style=for-the-badge&logo=nginx&logoColor=green">
+  <img src="https://img.shields.io/badge/npm-ED1C24?style=for-the-badge&logo=npm&logoColor=white">
+  <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=white">
+  <br>
+</div>
+
+### 공통
+<div align=center>
+
+  <img src="https://img.shields.io/badge/figma-EF2D5E?style=for-the-badge&logo=figma&logoColor=black">
+  <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+  <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+</div> 
+
+
+## 🖥️ 서비스 소개
+|   메인 화면  |  로그인  |   회원가입   |
+|:--------:|:------:|:--------:|
+| <img width="310" alt="main page" src="https://github.com/user-attachments/assets/24024b18-48b0-4d9a-b9a0-d74b348f96af" /> |<img width="310" alt="로그인" src="https://github.com/user-attachments/assets/b916ca7b-f74a-40d4-8e5d-395dc9ea7d68" /> | <img width="310" alt="스크린샷 2025-05-08 오전 11 37 09" src="https://github.com/user-attachments/assets/b677cf26-c549-4bc1-b1b3-430abb86bf8b" />|
+
+|                                                                                                          마이 페이지                                                                                                          |                                                                                                              상세 페이지                                                                                                               |                                                                                                             찜 및 시청 기록                                                                                                            |
+|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| <img width="310" alt="마이 페이지" src="https://github.com/user-attachments/assets/2c77939b-9cfe-4639-a5f8-5c3c0242b35d" />| <img width="310" alt="상세 페이지" src="https://github.com/user-attachments/assets/b3fc7d9f-cab5-4b7b-a8f0-2647713365b4" />| <img width="310" alt="찜 및 시청 기록" src="https://github.com/user-attachments/assets/fcbe0b82-3740-4d30-8f88-7a1dd8e3fc34" />|
 
 # 🚀 실행 방법
 
 ## 1. 환경 변수 설정
 
-각 루트 디렉터리에 .env 파일을 생성하고 TMDB API 키와 DB 설정을 입력합니다.
+루트 디렉터리에 .env 파일을 생성하고 TMDB API 키와 DB 설정을 입력합니다.
 
 ```
 env
 # backend/.env
-DATABASE_URL="file:./dev.db"
-TMDB_API_KEY=your_tmdb_api_key
-PORT=5000
-
-# frontend/.env
-VITE_TMDB_API_KEY=your_tmdb_api_key
+DATABASE_URL="postgresql"
+TMDB_API_KEY="TMDB api key"
+TOSS_SECRET_KEY="Toss API key"
+TMDB_BASE_URL = "https://api.themoviedb.org/3"
 ```
 
 # 🌟 주요 기능
@@ -62,6 +102,55 @@ VITE_TMDB_API_KEY=your_tmdb_api_key
 
 - 🔍 키워드 기반 검색 기능
 
-- 📌 즐겨찾기 저장 (추후 구현 예정)
-
+- 📌 영화 찜 기능
+  
 - 📱 반응형 UI 설계
+
+- 영화 시청기록 기능
+
+## 📑 프로젝트 규칙
+
+### Branch Strategy
+> - main / dev / 브랜치 기본 생성 
+
+
+### Git Convention
+> 1. 적절한 커밋 접두사 작성
+> 2. 커밋 메시지 내용 작성
+> 3. 내용 뒤에 이슈 (#이슈 번호)와 같이 작성하여 이슈 연결
+
+> | 접두사        | 설명                           |
+> | ------------- | ------------------------------ |
+> | Feat :     | 새로운 기능 구현               |
+> | Fix :      | 버그 수정                      |
+
+
+
+### Pull Request
+> ### Title
+> * 제목은 '[Feat] 홈 페이지 구현'과 같이 작성합니다.
+
+> ### PR Type
+  > - [ ] FEAT: 새로운 기능 구현
+  > - [ ] FIX: 버그 수정
+  > - [ ] DOCS: 문서 수정
+  > - [ ] STYLE: 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
+  > - [ ] REFACTOR: 코드 리펙토링
+  > - [ ] CHORE: 빌드 업무 수정, 패키지 매니저 수정
+
+### Code Convention
+>BE
+> - 패키지명 전체 소문자
+> - 클래스명, CamelCase
+> - 클래스 이름 명사 사용
+
+
+> FE
+> - 클래스명, CamelCase
+> - Event handler 사용 (ex. handle ~)
+> - export방식 (ex. export default ~)
+> - 화살표 함수 사용
+
+### Communication Rules
+> - Discord 활용
+> - 정기 회의
