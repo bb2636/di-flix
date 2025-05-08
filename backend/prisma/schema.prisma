@@ -32,7 +32,7 @@ movie_id     Int      @id @default(autoincrement())
 title        String   @db.VarChar(255)
 description  String?  @db.Text
 views        Int      @default(0)
-
+poster_path String? @db.VarChar(255)
 contentGenres ContentGenre[]  
 
 watchHistories WatchHistory[]
@@ -60,6 +60,9 @@ model WatchHistory {
   movie  Content? @relation(fields: [movie_id], references: [movie_id])
 
   timestamp DateTime @default(now())
+  watchTime Int @default(0)
+
+  @@unique([user_id, movie_id], map: "user_id_movie_id_unique")
 }
 
 model Wishlist {

@@ -16,7 +16,10 @@ const SearchResultSection: React.FC<Props> = ({ title, movies }) => {
       <div className={styles.thumbnailGrid}>
         {movies.map((movie) => (
           <div key={movie.id} className={styles.movieCard}>
-            <StyledLink to={`/movie/${movie.id}`} className={styles.linkWrapper}>
+            <StyledLink
+              to={`/movie/${movie.id}`}
+              className={styles.linkWrapper}
+            >
               <img
                 key={movie.id}
                 src={

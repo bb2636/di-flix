@@ -11,7 +11,7 @@ function LoginForm() {
 
   const handleLogin = async () => {
     try {
-      await login({ email, password });
+      await login({ email, password }); // AxiosResponse
       alert("로그인 성공!");
       navigate("/");
     } catch (err: unknown) {

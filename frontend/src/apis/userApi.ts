@@ -52,3 +52,25 @@ export const checkEmailDuplicate = async (email: string): Promise<boolean> => {
   });
   return res.data.duplicate; // 백엔드에서 { duplicate: true/false } 반환
 };
+
+export const saveWatchHistory = (
+  movie_id: number,
+  watchTime: number,
+  title?: string,
+  poster_path?: string,
+) => {
+  return api.post("/content/watch-history", {
+    movie_id,
+    watchTime,
+    title,
+    poster_path,
+  });
+};
+
+export const getWatchHistory = (movie_id: number) => {
+  return api.get(`/content/watch-history?movie_id=${movie_id}`);
+};
+
+export const getAllWatchHistory = () => {
+  return api.get("/content/watch-history/all");
+};
