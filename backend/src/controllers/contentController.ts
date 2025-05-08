@@ -197,3 +197,106 @@ export const saveMovieToDB = async (req: Request, res: Response) => {
     res.status(500).json({ message: "영화 정보 저장 실패" });
   }
 };
+
+// 시청 기록 저장
+export const saveWatchHistory = async (req: AuthRequest, res: Response) => {
+  const userId = req.user?.user_id;
+  const { movie_id, watchTime, title, poster_path } = req.body;
+
+  if (!userId || !movie_id) {
+    res.status(400).json({ message: "필수값 누락" });
+    return;
+  }
+
+  try {
+    // Content 테이블에 영화가 없으면 추가 (최소한의 정보라도)
+    await prisma.content.upsert({
+      where: { movie_id },
+      update: {},
+      create: {
+        movie_id,
+        title: title || "",
+        poster_path: poster_path || null,
+      },
+    });
+
+    // 시청 기록 upsert
+    await prisma.watchHistory.upsert({
+      where: {
+        user_id_movie_id: {
+          user_id: userId,
+          movie_id,
+        },
+      },
+      update: {
+        watchTime,
+        timestamp: new Date(),
+      },
+      create: {
+        user_id: userId,
+        movie_id,
+        watchTime,
+      },
+    });
+
+    res.status(200).json({ message: "시청 위치 저장 완료" });
+  } catch (e) {
+    res.status(500).json({ message: "DB 저장 실패" });
+    console.error("시청 기록 저장 실패:", e);
+  }
+};
+
+// 시청 기록 조회
+export const getWatchHistory = async (req: AuthRequest, res: Response) => {
+  const userId = req.user?.user_id;
+  const movie_id = Number(req.query.movie_id);
+
+  if (!userId || !movie_id) {
+    res.status(400).json({ message: "필수값 누락" });
+    return;
+  }
+
+  try {
+    const history = await prisma.watchHistory.findUnique({
+      where: {
+        user_id_movie_id: {
+          user_id: userId,
+          movie_id,
+        },
+      },
+    });
+
+    res.status(200).json({ watchTime: history?.watchTime ?? 0 });
+  } catch (e) {
+    res.status(500).json({ message: "조회 실패" });
+  }
+};
+
+// 사용자의 모든 시청 기록 조회
+export const getAllWatchHistory = async (req: AuthRequest, res: Response) => {
+  const userId = req.user?.user_id;
+
+  if (!userId) {
+    res.status(400).json({ message: "필수값 누락" });
+    return;
+  }
+
+  try {
+    const histories = await prisma.watchHistory.findMany({
+      where: {
+        user_id: userId,
+      },
+      orderBy: {
+        timestamp: "desc",
+      },
+      include: {
+        movie: true,
+      },
+    });
+
+    res.status(200).json(histories);
+  } catch (e) {
+    console.error("시청 기록 조회 실패:", e);
+    res.status(500).json({ message: "조회 실패" });
+  }
+};

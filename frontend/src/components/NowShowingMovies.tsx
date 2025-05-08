@@ -35,7 +35,10 @@ const NowShowingMovies = () => {
         <div className={styles.thumbnailGrid}>
           {movies.map((movie) => (
             <div key={movie.id} className={styles.movieCard}>
-              <StyledLink to={`/movie/${movie.id}`} className={styles.linkWrapper}>
+              <StyledLink
+                to={`/movie/${movie.id}`}
+                className={styles.linkWrapper}
+              >
                 <img
                   src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   alt={movie.title}
