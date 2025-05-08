@@ -165,7 +165,7 @@ TMDB_BASE_URL = "https://api.themoviedb.org/3"
   
 - 📱 반응형 UI 설계
 
-- 영화 시청기록 기능
+- 📺 영화 시청기록 기능
 
 ## 📑 프로젝트 규칙
 
