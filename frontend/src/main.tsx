@@ -22,15 +22,14 @@ const router = createBrowserRouter([
       { path: "/signup", element: <SignupPage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/membershipRequired", element: <MembershipRequiredPage /> },
-      { path: "/payment/success", element: <PaymentSuccess />},
-      { path: "/payment/fail", element: <PaymentFail />},
+      { path: "/payment/success", element: <PaymentSuccess /> },
+      { path: "/payment/fail", element: <PaymentFail /> },
       { path: "/genre/:genreId", element: <GenreMoviePage /> },
       { path: "/search", element: <SearchResultPage /> },
       { path: "/movie/:id", element: <DetailMoviePage /> },
     ],
   },
 ]);
-
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <RouterProvider router={router} />,

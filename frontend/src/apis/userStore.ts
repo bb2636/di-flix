@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 export interface User {
   user_id: number;
   email: string;
+
   is_member: boolean | string;
 }
 
@@ -20,6 +21,6 @@ export const useUserStore = create<UserStore>()(
     }),
     {
       name: "user-store", // localStorage에 저장됨
-    }
-  )
+    },
+  ),
 );

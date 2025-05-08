@@ -8,6 +8,9 @@ import {
   getNowShowingMovies,
   getTopRatedMovies,
   getGenresCategory,
+  saveWatchHistory,
+  getWatchHistory,
+  getAllWatchHistory,
 } from "../controllers/contentController";
 import { verifyToken } from "../middlewares/login-required";
 
@@ -42,5 +45,9 @@ contentRouter.get("/nowShowing", getNowShowingMovies);
 
 // 높은 평점 영화 조회
 contentRouter.get("/topRated", getTopRatedMovies);
+
+contentRouter.get("/watch-history", verifyToken, getWatchHistory);
+contentRouter.get("/watch-history/all", verifyToken, getAllWatchHistory);
+contentRouter.post("/watch-history", verifyToken, saveWatchHistory);
 
 export default contentRouter;

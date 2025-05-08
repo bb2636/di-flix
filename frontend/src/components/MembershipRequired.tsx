@@ -4,7 +4,9 @@ function MembershipRequired() {
   const handlePayment = async () => {
     const clientKey = "test_ck_jExPeJWYVQ5vMYbn1yNpV49R5gvN"; // Toss 공개 키
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const tossPayments = (window as unknown as { TossPayments: any }).TossPayments(clientKey);
+    const tossPayments = (
+      window as unknown as { TossPayments: any }
+    ).TossPayments(clientKey);
 
     const orderId = `order-${Date.now()}`;
     const amount = 5500;

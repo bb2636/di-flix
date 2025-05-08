@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Movie } from "../types/movie";
 import styles from "../styles/DetailMoviePage.module.css";
-import { addWishlist, removeWishlist, checkWishlist } from "../apis/userApi";
+import {
+  addWishlist,
+  removeWishlist,
+  checkWishlist,
+  saveWatchHistory,
+  getWatchHistory,
+} from "../apis/userApi";
 import { genreMap } from "../types/genre";
+import { formatWatchTime } from "../utils/formatTime";
 
 interface DetailMovieProps {
   movie: Movie;
@@ -10,6 +17,9 @@ interface DetailMovieProps {
 
 const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
   const [isWished, setIsWished] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  const [formattedWatchTime, setFormattedWatchTime] = useState(""); // ✅ 추가
+  const playerRef = useRef<HTMLIFrameElement | null>(null);
 
   // ✅ 진입 시 찜 여부 확인
   useEffect(() => {
@@ -23,6 +33,57 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
     };
 
     fetchWishlistStatus();
+  }, [movie.id]);
+
+  // ✅ 시청 위치 불러오기
+  useEffect(() => {
+    const fetchWatchTime = async () => {
+      try {
+        const res = await getWatchHistory(movie.id);
+        const time = res.data.watchTime || 0;
+        setStartTime(time);
+        setFormattedWatchTime(formatWatchTime(time)); // ✅ 포맷된 시청 시간 저장
+      } catch (err) {
+        console.error("시청 시간 불러오기 실패", err);
+      }
+    };
+    fetchWatchTime();
+  }, [movie.id]);
+
+  // ✅ 시청 시간 저장
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const iframe = document.querySelector("iframe");
+      if (!iframe) return;
+
+      const playerWindow = iframe.contentWindow;
+      if (!playerWindow) return;
+
+      playerWindow.postMessage(JSON.stringify({ event: "listening" }), "*");
+    }, 5000);
+
+    const handleMessage = (e: MessageEvent) => {
+      try {
+        const data = JSON.parse(e.data);
+        if (data?.event === "infoDelivery" && data.info?.currentTime) {
+          const time = Math.floor(data.info.currentTime);
+          saveWatchHistory(
+            movie.id,
+            time,
+            movie.title,
+            movie.poster_path || undefined,
+          );
+        }
+      } catch (err) {
+        console.error("시청 위치 저장 실패", err);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("message", handleMessage);
+    };
   }, [movie.id]);
 
   const handleWishlistToggle = async () => {
@@ -41,7 +102,7 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
     }
   };
 
-  // 영화 정보 메타 생성
+  // 메타데이터 생성
   const year = movie.release_date ? movie.release_date.slice(0, 4) : "-";
   const rating = movie.vote_average ? movie.vote_average.toFixed(2) : "-";
   let genres = "";
@@ -86,12 +147,20 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
         <p className={styles.overview}>{movie.overview}</p>
 
         {movie.trailerKey && (
-          <iframe
-            className={styles.trailer}
-            src={`https://www.youtube.com/embed/${movie.trailerKey}`}
-            title="트레일러"
-            allowFullScreen
-          ></iframe>
+          <>
+            {formattedWatchTime && (
+              <div className={styles.watchTimeText}>
+                {/* 마지막 시청 위치: {formattedWatchTime} */}
+              </div>
+            )}
+            <iframe
+              ref={playerRef}
+              className={styles.trailer}
+              src={`https://www.youtube.com/embed/${movie.trailerKey}?start=${startTime}&enablejsapi=1`}
+              title="트레일러"
+              allowFullScreen
+            ></iframe>
+          </>
         )}
       </div>
     </div>
