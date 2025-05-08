@@ -92,7 +92,7 @@ Node.js, React, TypeScript를 사용하여 제작한 OTT 클론 프로젝트입�
 본 프로젝트는 AWS 기반 3-Tier 구조로 구성된 웹 애플리케이션입니다. 각 계층은 다음과 같이 역할이 분리되어 있습니다:
 
 - **Web (Frontend)**: 정적 콘텐츠 제공 (React)
-- **WAS (Backend)**: API 서버, 비즈니스 로직 처리 (Node.js, Express/NestJS)
+- **WAS (Backend)**: API 서버, 비즈니스 로직 처리 (Node.js, Express)
 - **DB (Database)**: PostgreSQL 데이터베이스
 
 ---
